@@ -1,0 +1,13 @@
+(progn
+ (+ 1 2)
+ (setv a 3)
+ (dec 3)
+ (if true
+   3
+   2))
+
+(def b(if true
+        (do
+         (+ 1 2)
+         (inc 4))
+        2))

@@ -1,0 +1,1 @@
+Use macports install lua51, point lupa to lua51
