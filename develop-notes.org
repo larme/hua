@@ -1,0 +1,14 @@
+* hy compiler internal notes
+** + in Result object
+
+to convert a plain ast object into Result Object
+
+#+BEGIN_SRC hy
+  (+ (Result) ast)
+#+END_SRC
+* hua implementation notes
+** =setv/def=
+
+Unlike python, lua's scoping is not local by default. Hence we differentiate =setv= and =def= where =(setv a 1)= resulting =a = 1= while =(def a 1)= resulting =local a = 1=.
+
+More difference will come in the following case:

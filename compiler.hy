@@ -1,9 +1,15 @@
+(import [hy.models.expression [HyExpression]]
+        [hy.models.integer [HyInteger]]
+        [hy.models.float [HyFloat]]
+        [hy.models.string [HyString]]
+        [hy.models.symbol [HySymbol]])
+
 (import mlast)
 
 (def -compile-table {})
 
 (defn ast-str (s)
-  (% "hua_%s" s))
+  (% "%s" s))
 
 (defn builds [-type]
   "assoc decorated function to compile-table"
@@ -15,17 +21,17 @@
   [[--init--
     (fn [self &rest args &kwargs kwargs]
       (setv self.stmts [])
-      (setv temp-vars [])
-      (setv -expr nil)
-      (setv --used-expr false)
+      (setv self.temp-vars [])
+      (setv self.-expr nil)
+      (setv self.--used-expr false)
 
       (for [kwarg kwargs]
         (unless (in kwarg ["stmts"
                            "expr"
-                           "temp-vars"])
+                           "temp_vars"])
           (print "something wrong"))
-        (setattr self kwarg (get kwargs kwarg)))
-
+        (setattr self kwarg (. kwargs [kwarg])))
+      
       nil)]
 
    [expr
@@ -57,19 +63,31 @@
    [expr-as-stmt
     (fn [self]
       "Convert the Result's expression context to a statement"
+      (print "expr-as-stmt called?")
+      (print "result stmts:" (. self stmts))
+      (print "result expr:" (. self expr nodes))
+      (print "\n")
       (if (and self.expr
-               (not (instance? self.expr mlast.Id))
-               (not (empty? self.stmts)))
+               (not (and (instance? mlast.Id self.expr)
+                         (not (empty? self.stmts)))))
         ;; FIXME?
-        (+ (Result) self.expr)
-        (Result)))]
+        (do
+         (print "asldfj: " self.expr "\n")
+         (+ (Result) self.expr))
+        (do
+         (print "akdsfjlakfsd")
+         (print (. self expr nodes))
+         (print (and self.expr
+                     (not (and (instance? mlast.Id self.expr)
+                               (not (empty? self.stmts))))) "\n")
+         (Result))))]
 
    [rename
     (fn [self new-name-]
       "Rename the Result's temporary variables to a `new-name`"
       (let [[new-name (ast-str new-name-)]]
-        (for [var temp-vars]
-          (if (instance? var mlast.Id)
+        (for [var self.temp-vars]
+          (if (instance? mlast.Id var)
             (setv var.nodes [new-name])
             ;; FIXME
             "nothing"))
@@ -77,11 +95,13 @@
 
    [--add--
     (fn [self other]
+      (print "result before addition:" self.__dict__)
+      (print "result to be added:" other.__dict__)
       (cond
-       [(instance? other mlast.Stat)
-        (+ self (apply Result [] {stmts [other]}))]
-       [(instance? other mlast.Expr)
-        (+ self (apply Result [] {expr other}))]
+       [(mlast.stat? other)
+        (+ self (apply Result [] {"stmts" [other]}))]
+       [(mlast.expr? other)
+        (+ self (apply Result [] {"expr" other}))]
 
        ;; FIXME
        [true
@@ -90,7 +110,10 @@
                                 other.stmts))
           (setv result.expr other.expr)
           (setv result.temp-vars other.temp-vars)
+          (print "result after addition:" result.__dict__)
+          (print "\n")
           result)]))]
+
    ])
 
 (defn -branch [results-]
@@ -100,7 +123,7 @@
     (for [result (slice results 0 -1)]
       (+= ret result)
       (+= ret (.expr-as-stmt result)))
-    (for [result (slice result -1)]
+    (for [result (slice results -1)]
       (+= ret result))
     ret))
 
@@ -111,7 +134,8 @@
     (fn [self module-name]
       (setv self.anon-fn-count 0)
       (setv self.anon-var-count 0)
-      (setv self.module-name module-name))]
+      (setv self.module-name module-name)
+      nil)]
 
    [get-anon-var
     (fn [self]
@@ -125,24 +149,34 @@
 
    [compile-atom
     (fn [self atom-type atom]
+      ;; (print atom-type)
+      ;; (print atom)
+      ;; (print (in atom-type -compile-table))
+      (print "compile-atom ======")
       (when (in atom-type -compile-table)
+        (print "compile-f: " (get -compile-table atom-type))
+        (print "atom: " atom)
+        (print "\n")
         (let [[compile-f (get -compile-table atom-type)]
               [ret (compile-f self atom)]]
-          (if (instance? ret Result)
+          (print "atom result 1: " ret)
+          (print "\n")
+          (if (instance? Result ret)
             ret
             (+ (Result) ret)))))]
 
    [compile
     (fn [self tree]
       ;;; FIXME compiler errors
+      (print "compile =====")
       (let [[-type (type tree)]]
-        (compile-atom self -type tree)))]
+        (.compile-atom self -type tree)))]
 
    [-compile-collect
     (fn [self exprs]
       "Collect the expression contexts from a list of compiled expression."
-      (let [[compiled-exprs []
-             ret (Result)]]
+      (let [[compiled-exprs []]
+            [ret (Result)]]
         (for [expr exprs]
           (+= ret (.compile self expr))
           (.append compiled-exprs (ret.force_expr)))
@@ -155,11 +189,25 @@
    ;;; FIXME parse lambda list
 
    ;;; FIXME _storeize
+   [-storeize
+    (fn [self name]
+      (if-not (.expr? name)
+              (print "FIXME: type error")
+              (setv name name.expr))
+
+      ;;; FIXME multiple assign, index etc.
+      (cond [(instance? mlast.Id name)
+             name]
+            [true
+             (print "FIXME: type error")]))]
 
    [compile-raw-list
     (with-decorator (builds list)
-      (fn [self entires]
+      (fn [self entries]
         (let [[ret (.-compile-branch self entries)]]
+          (print "end?" (.expr-as-stmt ret))
+          (print "end? 2" (. ret __dict__))
+          (print "\n")
           (+= ret (.expr-as-stmt ret)))))]
 
    ;;; FIXME quote related
@@ -175,13 +223,92 @@
               [orel (if (empty? expression)
                       (Result)
                       (.compile self (.pop expression 0)))]
-              [ret condition]]
-          (if-not (and (empty? body.stmts)
-                       (empty? orel.stmts))
-                  (let [[var-name (.get-anon-fn self)]
-                        [var (mlast.Id var-name)]]
-                    "FIXME store value here"))
+              [ret condition]
+              
+              [var-name (.get-anon-var self)]
+              [var (mlast.Id var-name)]
+
+              [expr-name (mlast.Id (ast-str var-name))]]
+
+          ;; we won't test if statements in body or orel because lua doesn't have official ternary operator support
+
+          ;;          (+= ret (mlast.Local [var]))
+          (setv ret (+ (Result) (mlast.Local [var]) ret))
+          (+= body (mlast.Set [var] [body.force-expr]))
+          (+= orel (mlast.Set [var] [orel.force-expr]))
+          (+= ret (mlast.If ret.force-expr body.stmts orel.stmts))
+          (+= ret (apply Result []
+                         {"expr" expr-name "temp_vars" [expr-name
+                                                        var]}))
+          ret
           )))]
+
+   [compile-expression
+    (with-decorator (builds HyExpression)
+      (fn [self expression]
+        ;;; FIXME: macroexpand and "." and a lot more
+
+        (setv fun (get expression 0))
+        (setv func nil)
+        (.compile-atom self fun expression)))]
+
+   [compile-def-expression
+    (with-decorator (builds "def")
+      (fn [self expression]
+        (.-compile-assign self
+                          (get expression 1)
+                          (get expression 2)
+                          true)))]
+
+   [compile-setv-expression
+    (with-decorator (builds "setv")
+      (fn [self expression]
+        (.-compile-assign self
+                          (get expression 1)
+                          (get expression 2)
+                          false)))]
+
+   [-compile-assign
+    (fn [self name result local?]
+      (setv str-name (% "%s" name))
+
+      ;;; FIXME test builtin
+      (setv result (.compile self result))
+      (setv ld-name (.compile self name))
+      (setv assign (if local? mlast.Local mlast.Set))
+      
+      (if (and (not (empty? result.temp-vars))
+               (instance? HyString name)
+               (not (in "." name)))
+        (.rename result name)
+        (do
+         (setv st-name (.-storeize self ld-name))
+         (+= result (assign (mlast.Id [st-name])
+                            [result.force-expr]))))
+
+      (+= result ld-name)
+      result)]
+
+   [compile-integer
+    (with-decorator (builds HyInteger)
+      (fn [self number]
+        (mlast.Number number)))]
+
+   [compile-float
+    (with-decorator (builds HyFloat)
+      (fn [self number]
+        (mlast.Number number)))]
+
+   [compile-string
+    (with-decorator (builds HyString)
+      (fn [self string]
+        (mlast.String string)))]
+
+   [compile-symbol
+    (with-decorator (builds HySymbol)
+      (fn [self symbol]
+        ;;; FIXME more complex case
+        (mlast.Id (ast-str symbol))))]
    ])
 
 

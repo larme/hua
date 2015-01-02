@@ -30,4 +30,18 @@ local function plus2(a, b)
   return a + b
 end
 
-return 3 and 4 or 5
+if true then
+  local test = 1
+else
+  local test = 2
+end
+
+print(test)
+print("ha")
+
+if true then
+  return 3
+else
+  return 4
+end
+
