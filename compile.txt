@@ -1,319 +1,321 @@
+./?.lua;/opt/local/share/lua/5.1/?.lua;/opt/local/share/lua/5.1/?/init.lua;/opt/local/lib/lua/5.1/?.lua;/opt/local/lib/lua/5.1/?/init.lua;/Users/larme/codes/hua/metalua/?.lua
+{}
 compile =====
 compile-atom ======
-compile-f:  <function compile_expression at 0x109366488>
+compile-f:  <function compile_expression at 0x101644488>
 atom:  (u'def' u'a' (u'if' 1L (u'if' u'True' (u'setv' u'c' 2L) (u'setv' u'd' 4L)) 3L))
 
 
 compile-atom ======
-compile-f:  <function compile_def_expression at 0x109366500>
+compile-f:  <function compile_def_expression at 0x101644500>
 atom:  (u'def' u'a' (u'if' 1L (u'if' u'True' (u'setv' u'c' 2L) (u'setv' u'd' 4L)) 3L))
 
 
 compile =====
 compile-atom ======
-compile-f:  <function compile_expression at 0x109366488>
+compile-f:  <function compile_expression at 0x101644488>
 atom:  (u'if' 1L (u'if' u'True' (u'setv' u'c' 2L) (u'setv' u'd' 4L)) 3L)
 
 
 compile-atom ======
-compile-f:  <function compile_if at 0x109366410>
+compile-f:  <function compile_if at 0x101644410>
 atom:  (u'if' 1L (u'if' u'True' (u'setv' u'c' 2L) (u'setv' u'd' 4L)) 3L)
 
 
 compile =====
 compile-atom ======
-compile-f:  <function compile_integer at 0x109366668>
+compile-f:  <function compile_integer at 0x101644668>
 atom:  1
 
 
-atom result 1:  <class Number 1 at 0x109311c90>
+atom result 1:  {'nodes': [1L], 'value': 1L}
 
 
 result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
 result to be added: {'nodes': [1L], 'value': 1L}
 result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': <class Number 1 at 0x109311c90>}
-result after addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 1 at 0x109311c90>}
+result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': <class Number 1 at 0x10159bc90>}
+result after addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 1 at 0x10159bc90>}
 
 
 compile =====
 compile-atom ======
-compile-f:  <function compile_expression at 0x109366488>
+compile-f:  <function compile_expression at 0x101644488>
 atom:  (u'if' u'True' (u'setv' u'c' 2L) (u'setv' u'd' 4L))
 
 
 compile-atom ======
-compile-f:  <function compile_if at 0x109366410>
+compile-f:  <function compile_if at 0x101644410>
 atom:  (u'if' u'True' (u'setv' u'c' 2L) (u'setv' u'd' 4L))
 
 
 compile =====
 compile-atom ======
-compile-f:  <function compile_symbol at 0x1093667d0>
+compile-f:  <function compile_symbol at 0x1016447d0>
 atom:  True
 
 
-atom result 1:  <class Id True at 0x109311510>
+atom result 1:  {'nodes': [u'True']}
 
 
 result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
 result to be added: {'nodes': [u'True']}
 result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': <class Id True at 0x109311510>}
-result after addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id True at 0x109311510>}
+result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': <class Id True at 0x10159b510>}
+result after addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id True at 0x10159b510>}
 
 
 compile =====
 compile-atom ======
-compile-f:  <function compile_expression at 0x109366488>
+compile-f:  <function compile_expression at 0x101644488>
 atom:  (u'setv' u'c' 2L)
 
 
 compile-atom ======
-compile-f:  <function compile_setv_expression at 0x109366578>
+compile-f:  <function compile_setv_expression at 0x101644578>
 atom:  (u'setv' u'c' 2L)
 
 
 compile =====
 compile-atom ======
-compile-f:  <function compile_integer at 0x109366668>
+compile-f:  <function compile_integer at 0x101644668>
 atom:  2
 
 
-atom result 1:  <class Number 2 at 0x1093113d0>
+atom result 1:  {'nodes': [2L], 'value': 2L}
 
 
 result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
 result to be added: {'nodes': [2L], 'value': 2L}
 result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': <class Number 2 at 0x1093113d0>}
-result after addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 2 at 0x1093113d0>}
+result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': <class Number 2 at 0x10159b150>}
+result after addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 2 at 0x10159b150>}
 
 
 compile =====
 compile-atom ======
-compile-f:  <function compile_symbol at 0x1093667d0>
+compile-f:  <function compile_symbol at 0x1016447d0>
 atom:  c
 
 
-atom result 1:  <class Id c at 0x109311150>
+atom result 1:  {'nodes': [u'c']}
 
 
 result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
 result to be added: {'nodes': [u'c']}
 result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': <class Id c at 0x109311150>}
-result after addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id c at 0x109311150>}
+result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': <class Id c at 0x10159b3d0>}
+result after addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id c at 0x10159b3d0>}
 
 
-result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 2 at 0x1093113d0>}
-result to be added: {'nodes': [<class Id [<class Id c at 0x109311150>] at 0x109311ed0>, [<class Number 2 at 0x1093113d0>]]}
-result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 2 at 0x1093113d0>}
-result to be added: {'stmts': [<mlast.Set object at 0x109311750>], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result after addition: {'stmts': [<mlast.Set object at 0x109311750>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
+result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 2 at 0x10159b150>}
+result to be added: {'nodes': [<class Id [<class Id c at 0x10159b3d0>] at 0x10159bed0>, [<class Number 2 at 0x10159b150>]]}
+result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 2 at 0x10159b150>}
+result to be added: {'stmts': [<mlast.Set object at 0x10159b750>], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
+result after addition: {'stmts': [<mlast.Set object at 0x10159b750>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
 
 
-result before addition: {'stmts': [<mlast.Set object at 0x109311750>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
-result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id c at 0x109311150>}
-result after addition: {'stmts': [<mlast.Set object at 0x109311750>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id c at 0x109311150>}
+result before addition: {'stmts': [<mlast.Set object at 0x10159b750>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
+result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id c at 0x10159b3d0>}
+result after addition: {'stmts': [<mlast.Set object at 0x10159b750>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id c at 0x10159b3d0>}
 
 
-atom result 1:  <compiler.Result object at 0x109311b90>
+atom result 1:  {'stmts': [<mlast.Set object at 0x10159b750>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id c at 0x10159b3d0>}
 
 
-atom result 1:  <compiler.Result object at 0x109311b90>
-
-
-compile =====
-compile-atom ======
-compile-f:  <function compile_expression at 0x109366488>
-atom:  (u'setv' u'd' 4L)
-
-
-compile-atom ======
-compile-f:  <function compile_setv_expression at 0x109366578>
-atom:  (u'setv' u'd' 4L)
+atom result 1:  {'stmts': [<mlast.Set object at 0x10159b750>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id c at 0x10159b3d0>}
 
 
 compile =====
 compile-atom ======
-compile-f:  <function compile_integer at 0x109366668>
+compile-f:  <function compile_expression at 0x101644488>
+atom:  (u'setv' u'd' 4L)
+
+
+compile-atom ======
+compile-f:  <function compile_setv_expression at 0x101644578>
+atom:  (u'setv' u'd' 4L)
+
+
+compile =====
+compile-atom ======
+compile-f:  <function compile_integer at 0x101644668>
 atom:  4
 
 
-atom result 1:  <class Number 4 at 0x109311e10>
+atom result 1:  {'nodes': [4L], 'value': 4L}
 
 
 result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
 result to be added: {'nodes': [4L], 'value': 4L}
 result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': <class Number 4 at 0x109311e10>}
-result after addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 4 at 0x109311e10>}
+result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': <class Number 4 at 0x10159be10>}
+result after addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 4 at 0x10159be10>}
 
 
 compile =====
 compile-atom ======
-compile-f:  <function compile_symbol at 0x1093667d0>
+compile-f:  <function compile_symbol at 0x1016447d0>
 atom:  d
 
 
-atom result 1:  <class Id d at 0x1093119d0>
+atom result 1:  {'nodes': [u'd']}
 
 
 result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
 result to be added: {'nodes': [u'd']}
 result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': <class Id d at 0x1093119d0>}
-result after addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id d at 0x1093119d0>}
+result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': <class Id d at 0x10159b9d0>}
+result after addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id d at 0x10159b9d0>}
 
 
-result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 4 at 0x109311e10>}
-result to be added: {'nodes': [<class Id [<class Id d at 0x1093119d0>] at 0x109311e90>, [<class Number 4 at 0x109311e10>]]}
-result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 4 at 0x109311e10>}
-result to be added: {'stmts': [<mlast.Set object at 0x109311bd0>], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result after addition: {'stmts': [<mlast.Set object at 0x109311bd0>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
+result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 4 at 0x10159be10>}
+result to be added: {'nodes': [<class Id [<class Id d at 0x10159b9d0>] at 0x10159be90>, [<class Number 4 at 0x10159be10>]]}
+result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 4 at 0x10159be10>}
+result to be added: {'stmts': [<mlast.Set object at 0x10159bbd0>], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
+result after addition: {'stmts': [<mlast.Set object at 0x10159bbd0>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
 
 
-result before addition: {'stmts': [<mlast.Set object at 0x109311bd0>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
-result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id d at 0x1093119d0>}
-result after addition: {'stmts': [<mlast.Set object at 0x109311bd0>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id d at 0x1093119d0>}
+result before addition: {'stmts': [<mlast.Set object at 0x10159bbd0>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
+result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id d at 0x10159b9d0>}
+result after addition: {'stmts': [<mlast.Set object at 0x10159bbd0>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id d at 0x10159b9d0>}
 
 
-atom result 1:  <compiler.Result object at 0x109311950>
+atom result 1:  {'stmts': [<mlast.Set object at 0x10159bbd0>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id d at 0x10159b9d0>}
 
 
-atom result 1:  <compiler.Result object at 0x109311950>
+atom result 1:  {'stmts': [<mlast.Set object at 0x10159bbd0>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id d at 0x10159b9d0>}
 
 
 result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result to be added: {'nodes': [[<class Id _hua_anon_var_1 at 0x109311690>], []]}
+result to be added: {'nodes': [[<class Id _hua_anon_var_1 at 0x10159b690>], []]}
 result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result to be added: {'stmts': [<mlast.Local object at 0x109311990>], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result after addition: {'stmts': [<mlast.Local object at 0x109311990>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
+result to be added: {'stmts': [<mlast.Local object at 0x10159b990>], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
+result after addition: {'stmts': [<mlast.Local object at 0x10159b990>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
 
 
-result before addition: {'stmts': [<mlast.Local object at 0x109311990>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
-result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id True at 0x109311510>}
-result after addition: {'stmts': [<mlast.Local object at 0x109311990>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id True at 0x109311510>}
+result before addition: {'stmts': [<mlast.Local object at 0x10159b990>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
+result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id True at 0x10159b510>}
+result after addition: {'stmts': [<mlast.Local object at 0x10159b990>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id True at 0x10159b510>}
 
 
-result before addition: {'stmts': [<mlast.Set object at 0x109311750>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id c at 0x109311150>}
-result to be added: {'nodes': [[<class Id _hua_anon_var_1 at 0x109311690>], [<class Id c at 0x109311150>]]}
-result before addition: {'stmts': [<mlast.Set object at 0x109311750>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id c at 0x109311150>}
-result to be added: {'stmts': [<mlast.Set object at 0x109311790>], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result after addition: {'stmts': [<mlast.Set object at 0x109311750>, <mlast.Set object at 0x109311790>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
+result before addition: {'stmts': [<mlast.Set object at 0x10159b750>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id c at 0x10159b3d0>}
+result to be added: {'nodes': [[<class Id _hua_anon_var_1 at 0x10159b690>], [<class Id c at 0x10159b3d0>]]}
+result before addition: {'stmts': [<mlast.Set object at 0x10159b750>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id c at 0x10159b3d0>}
+result to be added: {'stmts': [<mlast.Set object at 0x10159b790>], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
+result after addition: {'stmts': [<mlast.Set object at 0x10159b750>, <mlast.Set object at 0x10159b790>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
 
 
-result before addition: {'stmts': [<mlast.Set object at 0x109311bd0>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id d at 0x1093119d0>}
-result to be added: {'nodes': [[<class Id _hua_anon_var_1 at 0x109311690>], [<class Id d at 0x1093119d0>]]}
-result before addition: {'stmts': [<mlast.Set object at 0x109311bd0>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id d at 0x1093119d0>}
-result to be added: {'stmts': [<mlast.Set object at 0x109311b90>], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result after addition: {'stmts': [<mlast.Set object at 0x109311bd0>, <mlast.Set object at 0x109311b90>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
+result before addition: {'stmts': [<mlast.Set object at 0x10159bbd0>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id d at 0x10159b9d0>}
+result to be added: {'nodes': [[<class Id _hua_anon_var_1 at 0x10159b690>], [<class Id d at 0x10159b9d0>]]}
+result before addition: {'stmts': [<mlast.Set object at 0x10159bbd0>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id d at 0x10159b9d0>}
+result to be added: {'stmts': [<mlast.Set object at 0x10159bb90>], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
+result after addition: {'stmts': [<mlast.Set object at 0x10159bbd0>, <mlast.Set object at 0x10159bb90>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
 
 
-result before addition: {'stmts': [<mlast.Local object at 0x109311990>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id True at 0x109311510>}
-result to be added: {'nodes': [<class Id True at 0x109311510>, [<mlast.Set object at 0x109311750>, <mlast.Set object at 0x109311790>], [<mlast.Set object at 0x109311bd0>, <mlast.Set object at 0x109311b90>]]}
-result before addition: {'stmts': [<mlast.Local object at 0x109311990>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id True at 0x109311510>}
-result to be added: {'stmts': [<mlast.If object at 0x109311950>], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result after addition: {'stmts': [<mlast.Local object at 0x109311990>, <mlast.If object at 0x109311950>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
+result before addition: {'stmts': [<mlast.Local object at 0x10159b990>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id True at 0x10159b510>}
+result to be added: {'nodes': [<class Id True at 0x10159b510>, [<mlast.Set object at 0x10159b750>, <mlast.Set object at 0x10159b790>], [<mlast.Set object at 0x10159bbd0>, <mlast.Set object at 0x10159bb90>]]}
+result before addition: {'stmts': [<mlast.Local object at 0x10159b990>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id True at 0x10159b510>}
+result to be added: {'stmts': [<mlast.If object at 0x10159b950>], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
+result after addition: {'stmts': [<mlast.Local object at 0x10159b990>, <mlast.If object at 0x10159b950>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
 
 
-result before addition: {'stmts': [<mlast.Local object at 0x109311990>, <mlast.If object at 0x109311950>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
-result to be added: {'stmts': [], 'temp_vars': [<class Id _hua_anon_var_1 at 0x109311850>, <class Id _hua_anon_var_1 at 0x109311690>], '_Result__used_expr': False, '_expr': <class Id _hua_anon_var_1 at 0x109311850>}
-result after addition: {'stmts': [<mlast.Local object at 0x109311990>, <mlast.If object at 0x109311950>], 'temp_vars': [<class Id _hua_anon_var_1 at 0x109311850>, <class Id _hua_anon_var_1 at 0x109311690>], '_Result__used_expr': True, '_expr': <class Id _hua_anon_var_1 at 0x109311850>}
+result before addition: {'stmts': [<mlast.Local object at 0x10159b990>, <mlast.If object at 0x10159b950>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
+result to be added: {'stmts': [], 'temp_vars': [<class Id _hua_anon_var_1 at 0x10159b850>, <class Id _hua_anon_var_1 at 0x10159b690>], '_Result__used_expr': False, '_expr': <class Id _hua_anon_var_1 at 0x10159b850>}
+result after addition: {'stmts': [<mlast.Local object at 0x10159b990>, <mlast.If object at 0x10159b950>], 'temp_vars': [<class Id _hua_anon_var_1 at 0x10159b850>, <class Id _hua_anon_var_1 at 0x10159b690>], '_Result__used_expr': True, '_expr': <class Id _hua_anon_var_1 at 0x10159b850>}
 
 
-atom result 1:  <compiler.Result object at 0x109311190>
+atom result 1:  {'stmts': [<mlast.Local object at 0x10159b990>, <mlast.If object at 0x10159b950>], 'temp_vars': [<class Id _hua_anon_var_1 at 0x10159b850>, <class Id _hua_anon_var_1 at 0x10159b690>], '_Result__used_expr': True, '_expr': <class Id _hua_anon_var_1 at 0x10159b850>}
 
 
-atom result 1:  <compiler.Result object at 0x109311190>
+atom result 1:  {'stmts': [<mlast.Local object at 0x10159b990>, <mlast.If object at 0x10159b950>], 'temp_vars': [<class Id _hua_anon_var_1 at 0x10159b850>, <class Id _hua_anon_var_1 at 0x10159b690>], '_Result__used_expr': True, '_expr': <class Id _hua_anon_var_1 at 0x10159b850>}
 
 
 compile =====
 compile-atom ======
-compile-f:  <function compile_integer at 0x109366668>
+compile-f:  <function compile_integer at 0x101644668>
 atom:  3
 
 
-atom result 1:  <class Number 3 at 0x109311610>
+atom result 1:  {'nodes': [3L], 'value': 3L}
 
 
 result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
 result to be added: {'nodes': [3L], 'value': 3L}
 result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': <class Number 3 at 0x109311610>}
-result after addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 3 at 0x109311610>}
+result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': <class Number 3 at 0x10159b610>}
+result after addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 3 at 0x10159b610>}
 
 
 result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result to be added: {'nodes': [[<class Id _hua_anon_var_2 at 0x109311d90>], []]}
+result to be added: {'nodes': [[<class Id _hua_anon_var_2 at 0x10159bd90>], []]}
 result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result to be added: {'stmts': [<mlast.Local object at 0x109311a50>], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result after addition: {'stmts': [<mlast.Local object at 0x109311a50>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
+result to be added: {'stmts': [<mlast.Local object at 0x10159ba50>], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
+result after addition: {'stmts': [<mlast.Local object at 0x10159ba50>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
 
 
-result before addition: {'stmts': [<mlast.Local object at 0x109311a50>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
-result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 1 at 0x109311c90>}
-result after addition: {'stmts': [<mlast.Local object at 0x109311a50>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 1 at 0x109311c90>}
+result before addition: {'stmts': [<mlast.Local object at 0x10159ba50>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
+result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 1 at 0x10159bc90>}
+result after addition: {'stmts': [<mlast.Local object at 0x10159ba50>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 1 at 0x10159bc90>}
 
 
-result before addition: {'stmts': [<mlast.Local object at 0x109311990>, <mlast.If object at 0x109311950>], 'temp_vars': [<class Id _hua_anon_var_1 at 0x109311850>, <class Id _hua_anon_var_1 at 0x109311690>], '_Result__used_expr': True, '_expr': <class Id _hua_anon_var_1 at 0x109311850>}
-result to be added: {'nodes': [[<class Id _hua_anon_var_2 at 0x109311d90>], [<class Id _hua_anon_var_1 at 0x109311850>]]}
-result before addition: {'stmts': [<mlast.Local object at 0x109311990>, <mlast.If object at 0x109311950>], 'temp_vars': [<class Id _hua_anon_var_1 at 0x109311850>, <class Id _hua_anon_var_1 at 0x109311690>], '_Result__used_expr': True, '_expr': <class Id _hua_anon_var_1 at 0x109311850>}
-result to be added: {'stmts': [<mlast.Set object at 0x109311fd0>], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result after addition: {'stmts': [<mlast.Local object at 0x109311990>, <mlast.If object at 0x109311950>, <mlast.Set object at 0x109311fd0>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
+result before addition: {'stmts': [<mlast.Local object at 0x10159b990>, <mlast.If object at 0x10159b950>], 'temp_vars': [<class Id _hua_anon_var_1 at 0x10159b850>, <class Id _hua_anon_var_1 at 0x10159b690>], '_Result__used_expr': True, '_expr': <class Id _hua_anon_var_1 at 0x10159b850>}
+result to be added: {'nodes': [[<class Id _hua_anon_var_2 at 0x10159bd90>], [<class Id _hua_anon_var_1 at 0x10159b850>]]}
+result before addition: {'stmts': [<mlast.Local object at 0x10159b990>, <mlast.If object at 0x10159b950>], 'temp_vars': [<class Id _hua_anon_var_1 at 0x10159b850>, <class Id _hua_anon_var_1 at 0x10159b690>], '_Result__used_expr': True, '_expr': <class Id _hua_anon_var_1 at 0x10159b850>}
+result to be added: {'stmts': [<mlast.Set object at 0x10159bfd0>], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
+result after addition: {'stmts': [<mlast.Local object at 0x10159b990>, <mlast.If object at 0x10159b950>, <mlast.Set object at 0x10159bfd0>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
 
 
-result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 3 at 0x109311610>}
-result to be added: {'nodes': [[<class Id _hua_anon_var_2 at 0x109311d90>], [<class Number 3 at 0x109311610>]]}
-result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 3 at 0x109311610>}
-result to be added: {'stmts': [<mlast.Set object at 0x109311190>], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result after addition: {'stmts': [<mlast.Set object at 0x109311190>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
+result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 3 at 0x10159b610>}
+result to be added: {'nodes': [[<class Id _hua_anon_var_2 at 0x10159bd90>], [<class Number 3 at 0x10159b610>]]}
+result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 3 at 0x10159b610>}
+result to be added: {'stmts': [<mlast.Set object at 0x10159b190>], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
+result after addition: {'stmts': [<mlast.Set object at 0x10159b190>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
 
 
-result before addition: {'stmts': [<mlast.Local object at 0x109311a50>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 1 at 0x109311c90>}
-result to be added: {'nodes': [<class Number 1 at 0x109311c90>, [<mlast.Local object at 0x109311990>, <mlast.If object at 0x109311950>, <mlast.Set object at 0x109311fd0>], [<mlast.Set object at 0x109311190>]]}
-result before addition: {'stmts': [<mlast.Local object at 0x109311a50>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 1 at 0x109311c90>}
-result to be added: {'stmts': [<mlast.If object at 0x109311f50>], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result after addition: {'stmts': [<mlast.Local object at 0x109311a50>, <mlast.If object at 0x109311f50>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
+result before addition: {'stmts': [<mlast.Local object at 0x10159ba50>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 1 at 0x10159bc90>}
+result to be added: {'nodes': [<class Number 1 at 0x10159bc90>, [<mlast.Local object at 0x10159b990>, <mlast.If object at 0x10159b950>, <mlast.Set object at 0x10159bfd0>], [<mlast.Set object at 0x10159b190>]]}
+result before addition: {'stmts': [<mlast.Local object at 0x10159ba50>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Number 1 at 0x10159bc90>}
+result to be added: {'stmts': [<mlast.If object at 0x10159bf50>], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
+result after addition: {'stmts': [<mlast.Local object at 0x10159ba50>, <mlast.If object at 0x10159bf50>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
 
 
-result before addition: {'stmts': [<mlast.Local object at 0x109311a50>, <mlast.If object at 0x109311f50>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
-result to be added: {'stmts': [], 'temp_vars': [<class Id _hua_anon_var_2 at 0x109311710>, <class Id _hua_anon_var_2 at 0x109311d90>], '_Result__used_expr': False, '_expr': <class Id _hua_anon_var_2 at 0x109311710>}
-result after addition: {'stmts': [<mlast.Local object at 0x109311a50>, <mlast.If object at 0x109311f50>], 'temp_vars': [<class Id _hua_anon_var_2 at 0x109311710>, <class Id _hua_anon_var_2 at 0x109311d90>], '_Result__used_expr': True, '_expr': <class Id _hua_anon_var_2 at 0x109311710>}
+result before addition: {'stmts': [<mlast.Local object at 0x10159ba50>, <mlast.If object at 0x10159bf50>], 'temp_vars': [], '_Result__used_expr': True, '_expr': None}
+result to be added: {'stmts': [], 'temp_vars': [<class Id _hua_anon_var_2 at 0x10159b710>, <class Id _hua_anon_var_2 at 0x10159bd90>], '_Result__used_expr': False, '_expr': <class Id _hua_anon_var_2 at 0x10159b710>}
+result after addition: {'stmts': [<mlast.Local object at 0x10159ba50>, <mlast.If object at 0x10159bf50>], 'temp_vars': [<class Id _hua_anon_var_2 at 0x10159b710>, <class Id _hua_anon_var_2 at 0x10159bd90>], '_Result__used_expr': True, '_expr': <class Id _hua_anon_var_2 at 0x10159b710>}
 
 
-atom result 1:  <compiler.Result object at 0x109311650>
+atom result 1:  {'stmts': [<mlast.Local object at 0x10159ba50>, <mlast.If object at 0x10159bf50>], 'temp_vars': [<class Id _hua_anon_var_2 at 0x10159b710>, <class Id _hua_anon_var_2 at 0x10159bd90>], '_Result__used_expr': True, '_expr': <class Id _hua_anon_var_2 at 0x10159b710>}
 
 
-atom result 1:  <compiler.Result object at 0x109311650>
+atom result 1:  {'stmts': [<mlast.Local object at 0x10159ba50>, <mlast.If object at 0x10159bf50>], 'temp_vars': [<class Id _hua_anon_var_2 at 0x10159b710>, <class Id _hua_anon_var_2 at 0x10159bd90>], '_Result__used_expr': True, '_expr': <class Id _hua_anon_var_2 at 0x10159b710>}
 
 
 compile =====
 compile-atom ======
-compile-f:  <function compile_symbol at 0x1093667d0>
+compile-f:  <function compile_symbol at 0x1016447d0>
 atom:  a
 
 
-atom result 1:  <class Id a at 0x1093118d0>
+atom result 1:  {'nodes': [u'a']}
 
 
 result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
 result to be added: {'nodes': [u'a']}
 result before addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': None}
-result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': <class Id a at 0x1093118d0>}
-result after addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id a at 0x1093118d0>}
+result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': False, '_expr': <class Id a at 0x10159b8d0>}
+result after addition: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id a at 0x10159b8d0>}
 
 
-result before addition: {'stmts': [<mlast.Local object at 0x109311a50>, <mlast.If object at 0x109311f50>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id a at 0x109311710>}
-result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id a at 0x1093118d0>}
-result after addition: {'stmts': [<mlast.Local object at 0x109311a50>, <mlast.If object at 0x109311f50>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id a at 0x1093118d0>}
+result before addition: {'stmts': [<mlast.Local object at 0x10159ba50>, <mlast.If object at 0x10159bf50>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id a at 0x10159b710>}
+result to be added: {'stmts': [], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id a at 0x10159b8d0>}
+result after addition: {'stmts': [<mlast.Local object at 0x10159ba50>, <mlast.If object at 0x10159bf50>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id a at 0x10159b8d0>}
 
 
-atom result 1:  <compiler.Result object at 0x109311810>
+atom result 1:  {'stmts': [<mlast.Local object at 0x10159ba50>, <mlast.If object at 0x10159bf50>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id a at 0x10159b8d0>}
 
 
-atom result 1:  <compiler.Result object at 0x109311810>
+atom result 1:  {'stmts': [<mlast.Local object at 0x10159ba50>, <mlast.If object at 0x10159bf50>], 'temp_vars': [], '_Result__used_expr': True, '_expr': <class Id a at 0x10159b8d0>}
 
 
 local a

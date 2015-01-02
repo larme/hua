@@ -159,7 +159,7 @@
         (print "\n")
         (let [[compile-f (get -compile-table atom-type)]
               [ret (compile-f self atom)]]
-          (print "atom result 1: " ret)
+          (print "atom result 1: " ret.--dict--)
           (print "\n")
           (if (instance? Result ret)
             ret
