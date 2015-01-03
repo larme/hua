@@ -25,6 +25,9 @@
    [gen-repr-template
     (fn [self]
       (.join "" ["<class " self.__class__.__name__ " %s at " (hex (id self)) ">"]))]
+   [--repr--
+    (fn [self]
+      (% (.gen-repr-template self) (% "nodes: %s" self.nodes)))]
    [to-table
     (fn [self]
       (let [[res {"tag" self.tag}]
