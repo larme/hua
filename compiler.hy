@@ -95,8 +95,6 @@
 
    [--add--
     (fn [self other]
-      (print "result before addition:" self.__dict__)
-      (print "result to be added:" other.__dict__)
       (cond
        [(mlast.stat? other)
         (+ self (apply Result [] {"stmts" [other]}))]
@@ -110,8 +108,6 @@
                                 other.stmts))
           (setv result.expr other.expr)
           (setv result.temp-vars other.temp-vars)
-          (print "result after addition:" result.__dict__)
-          (print "\n")
           result)]))]
 
    ])
@@ -159,8 +155,6 @@
         (print "\n")
         (let [[compile-f (get -compile-table atom-type)]
               [ret (compile-f self atom)]]
-          (print "atom result 1: " ret.--dict--)
-          (print "\n")
           (if (instance? Result ret)
             ret
             (+ (Result) ret)))))]
@@ -206,7 +200,6 @@
       (fn [self entries]
         (let [[ret (.-compile-branch self entries)]]
           (print "end?" (.expr-as-stmt ret))
-          (print "end? 2" (. ret __dict__))
           (print "\n")
           (+= ret (.expr-as-stmt ret)))))]
 
@@ -255,27 +248,17 @@
    [compile-def-expression
     (with-decorator (builds "def")
       (fn [self expression]
-        (.-compile-assign self
+        (.-compile-define self
                           (get expression 1)
-                          (get expression 2)
-                          true)))]
+                          (get expression 2))))]
 
-   [compile-setv-expression
-    (with-decorator (builds "setv")
-      (fn [self expression]
-        (.-compile-assign self
-                          (get expression 1)
-                          (get expression 2)
-                          false)))]
-
-   [-compile-assign
-    (fn [self name result local?]
+   [-compile-define
+    (fn [self name result]
       (setv str-name (% "%s" name))
 
       ;;; FIXME test builtin
       (setv result (.compile self result))
       (setv ld-name (.compile self name))
-      (setv assign (if local? mlast.Local mlast.Set))
       
       (if (and (not (empty? result.temp-vars))
                (instance? HyString name)
@@ -283,11 +266,23 @@
         (.rename result name)
         (do
          (setv st-name (.-storeize self ld-name))
-         (+= result (assign (mlast.Id [st-name])
-                            [result.force-expr]))))
+         (+= result (mlast.Local [st-name]
+                                 [result.force-expr]))))
 
       (+= result ld-name)
       result)]
+   
+   [compile-setv-expression
+    (with-decorator (builds "setv")
+      (fn [self expression]
+        (let [[name (get expression 1)]
+              [result (get expression 2)]]
+          (setv result (.compile self result))
+          (setv ld-name (.compile self name))
+          ;; FIXME do we need this? (setv st-name (.-storeize self ld-name))
+          (+= result (mlast.Set [ld-name.expr]
+                                [result.force-expr]))
+          result)))]
 
    [compile-integer
     (with-decorator (builds HyInteger)
