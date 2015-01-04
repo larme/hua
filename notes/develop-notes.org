@@ -122,3 +122,8 @@ Remember the result of condition is stored in =ret.expr=. That's how the compile
 Unlike python, lua's scoping is not local by default. Hence we differentiate =setv= and =def= where =(setv a 1)= resulting =a = 1= while =(def a 1)= resulting =local a = 1=.
 
 More difference will come in the following case:
+* hua vs hy
+- =def=/=setv= differs
+- no =defclass=
+- no =defmacro=
+- better scoping rules, which means nested =let= should work.
