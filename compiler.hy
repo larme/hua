@@ -63,24 +63,12 @@
    [expr-as-stmt
     (fn [self]
       "Convert the Result's expression context to a statement"
-      (print "expr-as-stmt called?")
-      (print "result stmts:" (. self stmts))
-      (print "result expr:" (. self expr nodes))
-      (print "\n")
       (if (and self.expr
                (not (and (instance? mlast.Id self.expr)
                          (not (empty? self.stmts)))))
         ;; FIXME?
-        (do
-         (print "asldfj: " self.expr "\n")
-         (+ (Result) self.expr))
-        (do
-         (print "akdsfjlakfsd")
-         (print (. self expr nodes))
-         (print (and self.expr
-                     (not (and (instance? mlast.Id self.expr)
-                               (not (empty? self.stmts))))) "\n")
-         (Result))))]
+        (+ (Result) self.expr)
+        (Result)))]
 
    [rename
     (fn [self new-name-]
@@ -199,9 +187,8 @@
     (with-decorator (builds list)
       (fn [self entries]
         (let [[ret (.-compile-branch self entries)]]
-          (print "end?" (.expr-as-stmt ret))
-          (print "\n")
-          (+= ret (.expr-as-stmt ret)))))]
+          (+= ret (.expr-as-stmt ret))
+          ret)))]
 
    ;;; FIXME quote related
 

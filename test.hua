@@ -3,11 +3,15 @@
              (setv d 4))
          3))
 
-(print a)
+(setv a (if 1
+          (if true (setv c 2)
+              (setv d 4))
+          3))
+
+(def x 1)
+(def y 2)
 
 ;;(def b (if 1 2 3))
-
-(def b "abc")
 
 ;; (defn plus [a b]
 ;;   (+ a b))

@@ -25,7 +25,8 @@
 
 (def result (let [[hst (import-file-to-hst "test.hua")]
                   [compiler (HuaASTCompiler "test")]]
-              (.compile compiler (first hst))))
+              (print hst)
+              (.compile compiler hst)))
                                 ;(print "test results: " result)
                                 ;(print "test results stmts: " (. result stmts [0] __dict__))
                                 ;(print "test results expr: " result.expr)
