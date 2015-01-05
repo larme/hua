@@ -31,7 +31,7 @@
                                 ;(print "test results stmts: " (. result stmts [0] __dict__))
                                 ;(print "test results expr: " result.expr)
                                 ;(print "haha: " (.to-table (. result stmts [0])))
-(setv stmts (list-comp (.to-table stmt) [stmt result.stmts]))
+(setv stmts (list-comp (.to-ml-table stmt) [stmt result.stmts]))
 (print (mlast->src stmts))
 
 

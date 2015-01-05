@@ -6,6 +6,8 @@
 
 (import mlast)
 
+(setv ast mlast)
+
 (def -compile-table {})
 
 (defn ast-str (s)
@@ -58,13 +60,13 @@
         (if self.expr
           self.expr
           ;; FIXME
-          (mlast.Id "None"))))]
+          (ast.Id "None"))))]
 
    [expr-as-stmt
     (fn [self]
       "Convert the Result's expression context to a statement"
       (if (and self.expr
-               (not (and (instance? mlast.Id self.expr)
+               (not (and (instance? ast.Id self.expr)
                          (not (empty? self.stmts)))))
         ;; FIXME?
         (+ (Result) self.expr)
@@ -75,7 +77,7 @@
       "Rename the Result's temporary variables to a `new-name`"
       (let [[new-name (ast-str new-name-)]]
         (for [var self.temp-vars]
-          (if (instance? mlast.Id var)
+          (if (instance? ast.Id var)
             (setv var.nodes [new-name])
             ;; FIXME
             "nothing"))
@@ -84,9 +86,9 @@
    [--add--
     (fn [self other]
       (cond
-       [(mlast.stat? other)
+       [(ast.stat? other)
         (+ self (apply Result [] {"stmts" [other]}))]
-       [(mlast.expr? other)
+       [(ast.expr? other)
         (+ self (apply Result [] {"expr" other}))]
 
        ;; FIXME
@@ -178,7 +180,7 @@
               (setv name name.expr))
 
       ;;; FIXME multiple assign, index etc.
-      (cond [(instance? mlast.Id name)
+      (cond [(instance? ast.Id name)
              name]
             [true
              (print "FIXME: type error")]))]
@@ -206,17 +208,17 @@
               [ret condition]
               
               [var-name (.get-anon-var self)]
-              [var (mlast.Id var-name)]
+              [var (ast.Id var-name)]
 
-              [expr-name (mlast.Id (ast-str var-name))]]
+              [expr-name (ast.Id (ast-str var-name))]]
 
           ;; we won't test if statements in body or orel because lua doesn't have official ternary operator support
 
-          ;;          (+= ret (mlast.Local [var]))
-          (setv ret (+ (Result) (mlast.Local [var]) ret))
-          (+= body (mlast.Set [var] [body.force-expr]))
-          (+= orel (mlast.Set [var] [orel.force-expr]))
-          (+= ret (mlast.If ret.force-expr body.stmts orel.stmts))
+          ;;          (+= ret (ast.Local [var]))
+          (setv ret (+ (Result) (ast.Local [var]) ret))
+          (+= body (ast.Set [var] [body.force-expr]))
+          (+= orel (ast.Set [var] [orel.force-expr]))
+          (+= ret (ast.If ret.force-expr body.stmts orel.stmts))
           (+= ret (apply Result []
                          {"expr" expr-name "temp_vars" [expr-name
                                                         var]}))
@@ -253,8 +255,8 @@
         (.rename result name)
         (do
          (setv st-name (.-storeize self ld-name))
-         (+= result (mlast.Local [st-name]
-                                 [result.force-expr]))))
+         (+= result (ast.Local [st-name]
+                               [result.force-expr]))))
 
       (+= result ld-name)
       result)]
@@ -267,30 +269,30 @@
           (setv result (.compile self result))
           (setv ld-name (.compile self name))
           ;; FIXME do we need this? (setv st-name (.-storeize self ld-name))
-          (+= result (mlast.Set [ld-name.expr]
-                                [result.force-expr]))
+          (+= result (ast.Set [ld-name.expr]
+                              [result.force-expr]))
           result)))]
 
    [compile-integer
     (with-decorator (builds HyInteger)
       (fn [self number]
-        (mlast.Number number)))]
+        (ast.Number number)))]
 
    [compile-float
     (with-decorator (builds HyFloat)
       (fn [self number]
-        (mlast.Number number)))]
+        (ast.Number number)))]
 
    [compile-string
     (with-decorator (builds HyString)
       (fn [self string]
-        (mlast.String string)))]
+        (ast.String string)))]
 
    [compile-symbol
     (with-decorator (builds HySymbol)
       (fn [self symbol]
         ;;; FIXME more complex case
-        (mlast.Id (ast-str symbol))))]
+        (ast.Id (ast-str symbol))))]
    ])
 
 

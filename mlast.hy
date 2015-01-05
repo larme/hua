@@ -28,15 +28,15 @@
    [--repr--
     (fn [self]
       (% (.gen-repr-template self) (% "nodes: %s" self.nodes)))]
-   [to-table
+   [to-ml-table
     (fn [self]
       (let [[res {"tag" self.tag}]
             [-nodes (list-comp (cond [(instance? ASTNode node)
-                                      (.to-table node)]
+                                      (.to-ml-table node)]
                                      [(instance? dict node)
-                                      (dict-comp key (.to-table (get node key)) [key (.keys node)])]
+                                      (dict-comp key (.to-ml-table (get node key)) [key (.keys node)])]
                                      [(instance? list node)
-                                      (lt->dict (list-comp (.to-table subnode)
+                                      (lt->dict (list-comp (.to-ml-table subnode)
                                                            [subnode node]))]
                                      [(or (instance? Real node)
                                           (string? node))
@@ -151,11 +151,11 @@
 ;; (setv test-expr (Local [(Id "a") (Id "b")] [(Number 1)]))
 ;; (setv test-expr2 (Set [(Id "a") (Id "b")] [(Number 1) (Number 3)]))
 ;; (setv test-3 (If (MLTrue) [test-expr2] [test-expr2]))
-;; (print (.to-table test-expr))
-;; ;(print (.ast-to-src lua-astc lua-astc (.table-from lua (-dict->ltable lua (.to-table test-expr2)))))
-;; ;(print (.ast-to-src lua-astc lua-astc (.table-from lua (-dict->ltable lua (.to-table test-3)))))
+;; (print (.to-ml-table test-expr))
+;; ;(print (.ast-to-src lua-astc lua-astc (.table-from lua (-dict->ltable lua (.to-ml-table test-expr2)))))
+;; ;(print (.ast-to-src lua-astc lua-astc (.table-from lua (-dict->ltable lua (.to-ml-table test-3)))))
 
-;; (print (.ast-to-src lua-astc lua-astc (.table-from lua (-dict->ltable lua (.to-table (Index (Index (Id "a") (Number 1)) (Id "b")))))))
+;; (print (.ast-to-src lua-astc lua-astc (.table-from lua (-dict->ltable lua (.to-ml-table (Index (Index (Id "a") (Number 1)) (Id "b")))))))
 
 
 
