@@ -124,6 +124,8 @@ Unlike python, lua's scoping is not local by default. Hence we differentiate =se
 More difference will come in the following case:
 * hua vs hy
 - =def=/=setv= differs
+- a =local= keyword?
 - no =defclass=
 - no =defmacro=
+- no quote/unquote because no =defmacro=?
 - better scoping rules, which means nested =let= should work.

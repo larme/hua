@@ -192,9 +192,15 @@
           (+= ret (.expr-as-stmt ret))
           ret)))]
 
-   ;;; FIXME quote related
+   ;;; FIXME quote related. or no quote because we don't have macro?
 
    ;;; FIXME a lot of functions in between
+
+   [compile-progn
+    (with-decorator (builds "do") (builds "progn")
+      (fn [self expression]
+        (.pop expression 0)
+        (.-compile-branch self expression)))]
 
    [compile-if
     (with-decorator (builds "if")
