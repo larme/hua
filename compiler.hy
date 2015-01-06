@@ -6,6 +6,8 @@
         [hy.models.list [HyList]]
         [hy.models.dict [HyDict]])
 
+(import hy.macros)
+
 (import mlast)
 
 (setv ast mlast)
@@ -238,11 +240,21 @@
 
    ;;; FIXME import/require
 
+   [compile-require-macro
+    (with-decorator (builds "require_macro")
+      (fn [self expression]
+        (.pop expression 0)
+        (for [entry expression]
+          (--import-- entry)
+          (hy.macros.require entry self.module-name))
+        (Result)))]
+
    [compile-expression
     (with-decorator (builds HyExpression)
       (fn [self expression]
         ;;; FIXME: macroexpand and "." and a lot more
-
+        (setv expression (hy.macros.macroexpand expression
+                                                self.module-name))
         (setv fun (get expression 0))
         (setv func nil)
         (.compile-atom self fun expression)))]
