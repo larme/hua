@@ -91,6 +91,33 @@
     (fn [self]
       (% (.gen-repr-template self) (get self.nodes 0)))]])
 
+;;; for metalua ast Table internal usage
+(defclass -Pair [ASTNode]
+  [[tag "Pair"]
+   [--init--
+    (fn [self p1 p2]
+      (setv self.nodes [p1 p2])
+      nil)]])
+
+(defclass Table [Expr]
+  [[tag "Table"]
+   [--init--
+    (fn [self array-part hash-part]
+      (setv self.array-part array-part)
+      (setv self.hash-part hash-part)
+      nil)]
+   [nodes
+    (with-decorator property
+      (defn nodes [self]
+        (let [[array-list (if (nil? self.array-part)
+                            []
+                            self.array-part)]
+              [hash-part (if (nil? self.hash-part)
+                           []
+                           (list-comp (-Pair key value)
+                                      [(, key value) (.items self.hash-part)]))]]
+          (+ array-list hash-part))))]])
+
 (defclass String [Expr]
   [[tag "String"]
    [--init--

@@ -2,7 +2,9 @@
         [hy.models.integer [HyInteger]]
         [hy.models.float [HyFloat]]
         [hy.models.string [HyString]]
-        [hy.models.symbol [HySymbol]])
+        [hy.models.symbol [HySymbol]]
+        [hy.models.list [HyList]]
+        [hy.models.dict [HyDict]])
 
 (import mlast)
 
@@ -231,6 +233,10 @@
           ret
           )))]
 
+   ;;; FIXME break, assert etc.
+
+   ;;; FIXME import/require
+
    [compile-expression
     (with-decorator (builds HyExpression)
       (fn [self expression]
@@ -308,6 +314,24 @@
       (fn [self symbol]
         ;;; FIXME more complex case
         (ast.Id (ast-str symbol))))]
+
+   [compile-list
+    (with-decorator (builds HyList)
+      (fn [self expression]
+        (setv (, elts ret) (.-compile-collect self expression))
+        (+= ret (ast.Table elts nil))
+        ret))]
+
+   [compile-dict
+    (with-decorator (builds HyDict)
+      (fn [self m]
+        (setv (, kv ret) (.-compile-collect self m))
+        (setv half-length (int (/ (len kv) 2)))
+        (setv hash-part (dict-comp (get kv (* 2 i))
+                                   (get kv (inc (* 2 i)))
+                                   [i (range half-length)]))
+        (+= ret (ast.Table nil hash-part))
+        ret))]
    ])
 
 

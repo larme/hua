@@ -18,6 +18,10 @@
 (def alfsk "love")
 
 (local b p m f)
+
+(def adict {"a" 1 "b" 3})
+(def alist [1 2 3 4 5])
+
 ;;(def b (if 1 2 3))
 
 ;; (defn plus [a b]
