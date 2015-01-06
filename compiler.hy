@@ -266,6 +266,16 @@
 
       (+= result ld-name)
       result)]
+
+   [compile-local-expression
+    (with-decorator (builds "local")
+      (fn [self expression]
+        (.pop expression 0)
+        (print expression)
+        (setv results (.-compile-collect self expression))
+        (setv locals (get results 0))
+        (+ (Result) (ast.Local locals))))]
+
    
    [compile-setv-expression
     (with-decorator (builds "setv")

@@ -35,7 +35,7 @@
                                       (.to-ml-table node)]
                                      [(instance? dict node)
                                       (dict-comp key (.to-ml-table (get node key)) [key (.keys node)])]
-                                     [(instance? list node)
+                                     [(instance? (, list tuple) node)
                                       (lt->dict (list-comp (.to-ml-table subnode)
                                                            [subnode node]))]
                                      [(or (instance? Real node)
