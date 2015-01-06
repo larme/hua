@@ -163,7 +163,7 @@
             [ret (Result)]]
         (for [expr exprs]
           (+= ret (.compile self expr))
-          (.append compiled-exprs (ret.force_expr)))
+          (.append compiled-exprs ret.force_expr))
         (, compiled-exprs ret)))]
 
    [-compile-branch
