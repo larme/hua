@@ -271,7 +271,6 @@
     (with-decorator (builds "local")
       (fn [self expression]
         (.pop expression 0)
-        (print expression)
         (setv results (.-compile-collect self expression))
         (setv locals (get results 0))
         (+ (Result) (ast.Local locals))))]
