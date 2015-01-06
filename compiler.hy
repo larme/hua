@@ -174,15 +174,16 @@
 
    ;;; FIXME parse lambda list
 
-   ;;; FIXME _storeize
+   ;;; FIXME _storeize do we really need this?
    [-storeize
     (fn [self name]
       (if-not (.expr? name)
               (print "FIXME: type error")
               (setv name name.expr))
 
+      (print "xixixixi" name)
       ;;; FIXME multiple assign, index etc.
-      (cond [(instance? ast.Id name)
+      (cond [(instance? (, ast.Id ast.Index) name)
              name]
             [true
              (print "FIXME: type error")]))]
@@ -313,7 +314,22 @@
     (with-decorator (builds HySymbol)
       (fn [self symbol]
         ;;; FIXME more complex case
-        (ast.Id (ast-str symbol))))]
+        (print "yo")
+        (print symbol)
+        (if (in "." symbol)
+          (do
+           (print "yoyo?")
+           (setv (, glob local) (.rsplit symbol "." 1))
+           (print glob local)
+           (setv glob (.replace (HySymbol glob) symbol))
+           (print glob)
+           (setv ret (.compile-symbol self glob))
+           (print ret)
+           (setv ret (ast.Index ret (ast.String (ast-str local))))
+           ret)
+          (do
+           (print "hehe?" (ast.Id (ast-str symbol)))
+           (ast.Id (ast-str symbol))))))]
 
    [compile-list
     (with-decorator (builds HyList)

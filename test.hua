@@ -15,12 +15,13 @@
  (def abc nil)
  (setv abc 1))
 
-(def alfsk "love")
+(def alfsk.x.y.z "love")
 
 (local b p m f)
 
 (def adict {"a" 1 "b" 3})
 (def alist [1 2 3 4 5])
+
 
 ;;(def b (if 1 2 3))
 
