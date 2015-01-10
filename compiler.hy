@@ -1,4 +1,5 @@
 (import [hy.models.expression [HyExpression]]
+        [hy.models.keyword [HyKeyword]]
         [hy.models.integer [HyInteger]]
         [hy.models.float [HyFloat]]
         [hy.models.string [HyString]]
@@ -255,9 +256,38 @@
         ;;; FIXME: macroexpand and "." and a lot more
         (setv expression (hy.macros.macroexpand expression
                                                 self.module-name))
-        (setv fun (get expression 0))
-        (setv func nil)
-        (.compile-atom self fun expression)))]
+        (cond [(not (instance? HyExpression expression))
+               (.compile self expression)]
+              [(= expression [])
+               (.compile-list self expression)]
+              [true
+               (let [[fun (get expression 0)]]
+                 (cond [(instance? HyKeyword fun)
+                        (print "FIXME: keyword call")]
+                       [(instance? HyString fun)
+                        (.-compile-fun-call self expression)]))])))]
+
+   [-compile-fun-call
+    (fn [self expression]
+      (setv fun (get expression 0))
+      (setv func nil)
+      (setv ret (.compile-atom self fun expression))
+      (if (not (nil? ret))
+        ret
+        (do
+         (when (.startswith fun ".")
+           (print "FIXME method call"))
+         (when (nil? func)
+           (setv func (.compile self fun)))
+
+         ;;; FIXME: no kwargs for lua?
+
+         (setv (, args ret) (.-compile-collect self
+                                               (slice expression 1)))
+         (+= ret (ast.Call func.expr
+                           args))
+
+         (+ func ret))))]
 
    [compile-def-expression
     (with-decorator (builds "def")

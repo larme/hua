@@ -173,6 +173,19 @@
       (+= self.nodes rest)
       nil)]])
 
+;;; Apply
+(defclass Call [Apply]
+  [[tag "Call"]
+   [--init--
+    (fn [self func args]
+      (setv self.func func)
+      (setv self.args args)
+      nil)]
+   [nodes
+    (with-decorator property
+      (defn nodes [self]
+        (+ [self.func] self.args)))]])
+
 ;;; test
 ;; (import [lua [init-lua lua lua-astc -dict->ltable]])
 ;; (setv test-expr (Local [(Id "a") (Id "b")] [(Number 1)]))

@@ -26,6 +26,8 @@
 
 (test-macro-1 x)
 
+(print "hello," "world")
+
 ;;(def b (if 1 2 3))
 
 ;; (defn plus [a b]
