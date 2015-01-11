@@ -184,7 +184,6 @@
               (print "FIXME: type error")
               (setv name name.expr))
 
-      (print "xixixixi" name)
       ;;; FIXME multiple assign, index etc.
       (cond [(instance? (, ast.Id ast.Index) name)
              name]
@@ -265,29 +264,45 @@
                  (cond [(instance? HyKeyword fun)
                         (print "FIXME: keyword call")]
                        [(instance? HyString fun)
-                        (.-compile-fun-call self expression)]))])))]
+                        (do
+                         (setv ret (.compile-atom self fun expression))
+                         (if (not (nil? ret))
+                           ret
+                           (.-compile-fun-call self expression)))]))])))]
 
    [-compile-fun-call
     (fn [self expression]
       (setv fun (get expression 0))
       (setv func nil)
-      (setv ret (.compile-atom self fun expression))
-      (if (not (nil? ret))
-        ret
-        (do
-         (when (.startswith fun ".")
-           (print "FIXME method call"))
-         (when (nil? func)
-           (setv func (.compile self fun)))
+      (setv method-call? false)
 
-         ;;; FIXME: no kwargs for lua?
+      (when (.startswith fun ".")
+        (setv method-call? true)
+        (setv ofun fun)
+        (setv fun (HySymbol (slice ofun 1)))
+        (.replace fun ofun)
 
-         (setv (, args ret) (.-compile-collect self
-                                               (slice expression 1)))
-         (+= ret (ast.Call func.expr
-                           args))
+        (when (< (len expression) 2)
+          (print "FIXME error message"))
 
-         (+ func ret))))]
+        ;; FIXME: this line should we ensure the compiled result is a string?
+        (setv method-name (ast.String (ast-str fun)))
+        (setv func (.compile self (.pop expression 1))))
+      (when (nil? func)
+        (setv func (.compile self fun)))
+
+      ;; FIXME: no kwargs for lua?
+      (setv (, args ret) (.-compile-collect self
+                                            (slice expression 1)))
+
+      (setv call (if method-call?
+                   (ast.Invoke func.expr
+                               method-name
+                               args)
+                   (ast.Call func.expr
+                             args)))
+
+      (+ func ret call))]
 
    [compile-def-expression
     (with-decorator (builds "def")
@@ -356,22 +371,14 @@
     (with-decorator (builds HySymbol)
       (fn [self symbol]
         ;;; FIXME more complex case
-        (print "yo")
-        (print symbol)
         (if (in "." symbol)
           (do
-           (print "yoyo?")
            (setv (, glob local) (.rsplit symbol "." 1))
-           (print glob local)
            (setv glob (.replace (HySymbol glob) symbol))
-           (print glob)
            (setv ret (.compile-symbol self glob))
-           (print ret)
            (setv ret (ast.Index ret (ast.String (ast-str local))))
            ret)
-          (do
-           (print "hehe?" (ast.Id (ast-str symbol)))
-           (ast.Id (ast-str symbol))))))]
+          (ast.Id (ast-str symbol)))))]
 
    [compile-list
     (with-decorator (builds HyList)

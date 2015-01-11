@@ -28,6 +28,10 @@
 
 (print "hello," "world")
 
+(table.print "love")
+
+(.method a "hey" "love")
+
 ;;(def b (if 1 2 3))
 
 ;; (defn plus [a b]

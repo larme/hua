@@ -186,6 +186,19 @@
       (defn nodes [self]
         (+ [self.func] self.args)))]])
 
+(defclass Invoke [Apply]
+  [[tag "Invoke"]
+   [--init--
+    (fn [self obj method args]
+      (setv self.obj obj)
+      (setv self.method method)
+      (setv self.args args)
+      nil)]
+   [nodes
+    (with-decorator property
+      (defn nodes [self]
+        (+ [self.obj self.method] self.args)))]])
+
 ;;; test
 ;; (import [lua [init-lua lua lua-astc -dict->ltable]])
 ;; (setv test-expr (Local [(Id "a") (Id "b")] [(Number 1)]))
