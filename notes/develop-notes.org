@@ -125,7 +125,12 @@ More difference will come in the following case:
 * hua vs hy
 - =def=/=setv= differs
 - a =local= keyword?
-- no =defclass=
+- no =defclass= (maybe later)
 - no =defmacro=
 - no quote/unquote because no =defmacro=?
 - better scoping rules, which means nested =let= should work.
+- =(.method object args...)= is different from =(table.func args...)=. The formal will be compiled to =object:method(args...)= and latter will be compiled to =table.func(args...)=
+
+Internal:
+
+- =let= is compiled to =do= block instead of an anonymous function
