@@ -32,6 +32,11 @@
 
 (.method a "hey" "love")
 
+(do
+ [1 2 (dosome 4)]
+ (print 2)
+ (print 3))
+
 (def l1 [1 2 3 (somefunc 4)])
 (def l2 [1 2 3 (def xxx 4)])
 

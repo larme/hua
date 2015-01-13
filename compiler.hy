@@ -69,12 +69,13 @@
 
    [expr-as-stmt
     (fn [self]
-      "Convert the Result's expression context to a statement"
+      "Convert the Result's expression context to a statement
+
+Unlike python, only function/method call can be pure expression statement"
+
       (if (and self.expr
-               (not (and (instance? ast.Id self.expr)
-                         (not (empty? self.stmts)))))
-        ;; FIXME?
-        (+ (Result) self.expr)
+               (instance? ast.Apply self.expr))
+        (+ (Result) (apply Result [] {"stmts" [self.expr]}))
         (Result)))]
 
    [rename
@@ -91,10 +92,12 @@
    [--add--
     (fn [self other]
       (cond
-       [(ast.stat? other)
-        (+ self (apply Result [] {"stmts" [other]}))]
+
+       ;; ast.expr case come first because ast.Apply is both statement and expression. By default we will treat them as expression.
        [(ast.expr? other)
         (+ self (apply Result [] {"expr" other}))]
+       [(ast.stat? other)
+        (+ self (apply Result [] {"stmts" [other]}))]
 
        ;; FIXME
        [true
@@ -103,9 +106,7 @@
                                 other.stmts))
           (setv result.expr other.expr)
           (setv result.temp-vars other.temp-vars)
-          result)]))]
-
-   ])
+          result)]))]])
 
 (defn -branch [results-]
   "make a branch out of a list of Result objects"
