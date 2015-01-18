@@ -80,3 +80,15 @@
 
 (defn mlast->src [ast-table]
   (.ast-to-src lua-astc lua-astc (.table-from lua (-dict->ltable lua ast-table))))
+
+(def tlua (init-lua))
+(def tlcode (.require tlua "tlcode"))
+(let [[lua-package-table (.require tlua "package")]
+      [lua-package-path (. lua-package-table path)]]
+  (assoc lua-package-table
+         "path"
+         (+ lua-package-path
+            ";"
+            current-path)))
+(defn tlast->src [ast-table]
+  (tlcode.generate (.table-from tlua (-dict->ltable tlua ast-table))))
