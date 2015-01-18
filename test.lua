@@ -1,6 +1,4 @@
-local mlc = require "metalua.compiler".new()
 
-local s_ast = mlc:src_to_ast("local x = 3")
 
 function print_table(t)
   for key, value in pairs(t) do print(key, value) end
@@ -22,7 +20,7 @@ local ast_sample4 = {tag="Return", {tag="Number", 1}}
 
 local ast_samples = {ast_sample, ast_sample3, ast_sample4}
 
-local src = mlc:ast_to_src(ast_samples)
+-- local src = mlc:ast_to_src(ast_samples)
 
 print(src)
 
@@ -45,9 +43,9 @@ end
 print(test)
 print("ha")
 
-if true then
-  return 3
-else
-  return 4
+local function testvar(...)
+  local test = {...}
+  print_table(test)
 end
 
+testvar(1, 2, nil, 3)

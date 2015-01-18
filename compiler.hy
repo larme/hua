@@ -176,7 +176,41 @@ Unlike python, only function/method call can be pure expression statement"
     (fn [self exprs]
       (-branch (list-comp (.compile self expr) [expr exprs])))]
 
-   ;;; FIXME parse lambda list
+   ;;; FIXME no keyword and kwargs yet, maybe never
+   [-parse-lambda-list
+    (fn [self exprs]
+      (def ll-keywords (, "&rest" "&optional"))
+      (def ret (Result))
+      (def args [])
+      (def defaults [])
+      (def varargs nil)
+      (def lambda-keyword nil)
+      (for [expr exprs]
+        (if (in expr ll-keywords)
+          ;; FIXME &optional error handling
+          (setv lambda-keyword expr)
+          (cond
+           [(nil? lambda-keyword)
+            (.append args expr)]
+           [(= lambda-keyword "&rest")
+            (if (nil? varargs)
+              (setv varargs (str expr))
+              (print "FIXME only one &rest error"))]
+           [(= lambda-keyword "&optional")
+            (do
+             (if (instance? HyList expr)
+               (if (not (= 2 (len expr)))
+                 (print "FIXME optinal rags hould be bare names"
+                        "or 2-item lists")
+                 (setv (, k v) expr))
+               (do
+                (setv k expr)
+                (setv v (.replace (HySymbol "nil") k))))
+             (.append args k)
+             (+= ret (.compile self v))
+             (.append defaults ret.force_expr))])))
+      (, ret args defaults varargs))]
+   
 
    ;;; FIXME _storeize do we really need this?
    [-storeize
@@ -372,6 +406,7 @@ Unlike python, only function/method call can be pure expression statement"
     (with-decorator (builds HySymbol)
       (fn [self symbol]
         ;;; FIXME more complex case
+
         (if (in "." symbol)
           (do
            (setv (, glob local) (.rsplit symbol "." 1))
@@ -386,6 +421,38 @@ Unlike python, only function/method call can be pure expression statement"
       (fn [self expression]
         (setv (, elts ret) (.-compile-collect self expression))
         (+= ret (ast.Table elts nil))
+        ret))]
+
+   [compile-function-def
+    (with-decorator (builds "lambda") (builds "fn")
+      (fn [self expression]
+        (.pop expression 0)
+        (def arglist (.pop expression 0))
+        (def (, ret -args defaults vararg)
+          (.-parse-lambda-list self arglist))
+        (def args (list-comp (ast.Id (ast-str arg))
+                             [arg -args]))
+        (def body (Result))
+
+        ;; FIXME &optional parameters
+        ;; use var = var == nil and default_value or var
+
+        (when vararg
+          (.append args (ast.Dots))
+          (+= body (apply Result
+                          []
+                          {"stmts" [(ast.Local [(ast.Id vararg)]
+                                               [(ast.Table
+                                                 [(ast.Dots)]
+                                                 nil)])]})))
+
+        (+= body (.-compile-branch self expression))
+
+        (when body.expr
+          (+= body (ast.Return body.expr)))
+
+        (+= ret (ast.Function args
+                              body.stmts))
         ret))]
 
    [compile-dict

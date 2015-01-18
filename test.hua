@@ -40,6 +40,11 @@
 (def l1 [1 2 3 (somefunc 4)])
 (def l2 [1 2 3 (def xxx 4)])
 
+(def f (fn [a b &rest rest]
+         (print a b)
+         (print 3 4)
+         4))
+
 ;;(def b (if 1 2 3))
 
 ;; (defn plus [a b]

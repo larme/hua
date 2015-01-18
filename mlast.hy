@@ -91,6 +91,29 @@
     (fn [self]
       (% (.gen-repr-template self) (get self.nodes 0)))]])
 
+(defclass String [Expr]
+  [[tag "String"]
+   [--init--
+    (fn [self value]
+      (setv self.value value)
+      (setv self.nodes [value])
+      None)]
+   [--repr--
+    (fn [self]
+      (% (.gen-repr-template self) (get self.nodes 0)))]])
+
+(defclass Function [Expr]
+  [[tag "Function"]
+   [--init--
+    (fn [self args body]
+      (setv self.args args)
+      (setv self.body body)
+      nil)]
+   [nodes
+    (with-decorator property
+      (defn nodes [self]
+        [self.args self.body]))]])
+
 ;;; for metalua ast Table internal usage
 (defclass -Pair [ASTNode]
   [[tag "Pair"]
@@ -118,17 +141,6 @@
                                       [(, key value) (.items self.hash-part)]))]]
           (+ array-list hash-part))))]])
 
-(defclass String [Expr]
-  [[tag "String"]
-   [--init--
-    (fn [self value]
-      (setv self.value value)
-      (setv self.nodes [value])
-      None)]
-   [--repr--
-    (fn [self]
-      (% (.gen-repr-template self) (get self.nodes 0)))]])
-
 ;;; lhs
 (defclass Id [LHS]
   [[tag "Id"]
@@ -155,6 +167,14 @@
       (setv self.nodes [idents exprs])
       nil)]])
 
+(defclass If [Stat]
+  [[tag "If"]
+   [--init--
+    (fn [self expr1 block1 &rest rest]
+      (setv self.nodes [expr1 block1])
+      (+= self.nodes rest)
+      nil)]])
+
 (defclass Local [Stat]
   [[tag "Local"]
    [--init--
@@ -165,12 +185,13 @@
         (.append self.nodes exprs))
       nil)]])
 
-(defclass If [Stat]
-  [[tag "If"]
+(defclass Return [Stat]
+  [[tag "Return"]
    [--init--
-    (fn [self expr1 block1 &rest rest]
-      (setv self.nodes [expr1 block1])
-      (+= self.nodes rest)
+    (fn [self return-exprs]
+      (if (coll? return-exprs)
+        (setv self.nodes return-exprs)
+        (setv self.nodes [return-exprs]))
       nil)]])
 
 ;;; Apply
