@@ -144,11 +144,11 @@ Unlike python, only function/method call can be pure expression statement"
       ;; (print atom-type)
       ;; (print atom)
       ;; (print (in atom-type -compile-table))
-      (print "compile-atom ======")
+      ;; (print "compile-atom ======")
       (when (in atom-type -compile-table)
-        (print "compile-f: " (get -compile-table atom-type))
-        (print "atom: " atom)
-        (print "\n")
+        ;; (print "compile-f: " (get -compile-table atom-type))
+        ;; (print "atom: " atom)
+        ;; (print "\n")
         (let [[compile-f (get -compile-table atom-type)]
               [ret (compile-f self atom)]]
           (if (instance? Result ret)
@@ -158,7 +158,7 @@ Unlike python, only function/method call can be pure expression statement"
    [compile
     (fn [self tree]
       ;;; FIXME compiler errors
-      (print "compile =====")
+      ;; (print "compile =====")
       (let [[-type (type tree)]]
         (.compile-atom self -type tree)))]
 
