@@ -2,20 +2,25 @@
 
 (import [lua [lt->dict]])
 
-(def *op-id* ["add"
-              "sub"
-              "mul"
-              "div"
-              "mod"
-              "pow"
-              "concat"
-              "eq"
-              "lt"
-              "le"
-              "and"
-              "or"
-              "not"
-              "len"])
+(def *op-ids* {:+ "add"
+               :- "sub"
+               :* "mul"
+               :/ "div"
+               :// "idiv"
+               :% "mod"
+               :^ "pow"
+               :concat "concat"
+               := "eq"
+               :< "lt"
+               :<= "le"
+               :and "and"
+               :or "or"
+               :not "not"
+               :len "len"})
+
+;;; given the operator name in hua, return corresponding op-id
+(defn get-op-id [op]
+  (get *op-ids* (keyword op)))
 
 (defclass ASTNode [object]
   [[--init--
