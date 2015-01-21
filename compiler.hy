@@ -289,8 +289,9 @@ Unlike python, only function/method call can be pure expression statement"
       (builds "not" )
       (builds "len")
       (fn [self expression]
-        (def ops {"not" "not" "len" "len"})
-        (def operator (.pop expression 0))
+        (def ops {:not "not"
+                  :len "len"})
+        (def operator (keyword (.pop expression 0)))
         (def operand (.compile self (.pop expression 0)))
         (+= operand (ast.Op (get ops operator)
                             operand.expr))
