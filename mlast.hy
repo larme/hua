@@ -9,6 +9,10 @@
                :// "idiv"
                :% "mod"
                :^ "pow"
+               :& "band"
+               :bor "bor"
+               :<< "shl"
+               :>> "shr"
                :concat "concat"
                := "eq"
                :< "lt"
@@ -20,7 +24,9 @@
 
 ;;; given the operator name in hua, return corresponding op-id
 (defn get-op-id [op]
-  (get *op-ids* (keyword op)))
+  (if (= op "|")
+    "bor"
+    (get *op-ids* (keyword op))))
 
 (defclass ASTNode [object]
   [[--init--
@@ -161,6 +167,13 @@
           (if self.e2
             (+ ret [self.e2])
             ret))))]])
+
+(defclass Paren [Expr]
+  [[tag "Paren"]
+   [--init--
+    (fn [self expr]
+      (setv self.nodes [expr])
+      nil)]])
 
 ;;; lhs
 (defclass Id [LHS]

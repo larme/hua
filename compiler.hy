@@ -295,6 +295,53 @@ Unlike python, only function/method call can be pure expression statement"
         (+= operand (ast.Op op-id operand.expr))
         operand))]
 
+   [compile-binary-operators
+    (with-decorator
+      (builds "and")
+      (builds "or")
+      (builds "%")
+      (builds "/")
+      (builds "//")
+      (builds "^")
+      ;; bitwise for lua 5.3
+      (builds "|")
+      (builds "bor")
+      (builds "&")
+      (builds "<<")
+      (builds ">>")
+      (builds "concat")
+      (fn [self expression]
+        (def operator (.pop expression 0))
+        (def op-id (ast.get-op-id operator))
+        
+        (def ret (.compile self (.pop expression 0)))
+        
+        (for [child expression]
+          (def left-expr ret.force-expr)
+          (+= ret (.compile self child))
+          (def right-expr ret.force-expr)
+          (+= ret (ast.Op op-id left-expr right-expr)))
+        (+ ret (ast.Paren ret.expr))))]
+
+   [compile-add-and-mul-expression
+    (with-decorator
+      (builds "+")
+      (builds "*")
+      (fn [self expression]
+        (if (> (len expression) 2)
+          (.compile-binary-operators self expression)
+          (do
+           (def id-op {"+" (HyInteger 0) "*" (HyInteger 1)})
+           (def op (.pop expression 0))
+           (def arg (if (empty? expression)
+                      (get id-op op)
+                      (.pop expression 0)))
+           (def expr (.replace (HyExpression [(HySymbol op)
+                                              (get id-op op)
+                                              arg])
+                               expression))
+           (.compile-binary-operators self expr)))))]
+
    [compile-expression
     (with-decorator (builds HyExpression)
       (fn [self expression]
