@@ -48,6 +48,10 @@
 (def f2 (fn [a b *dotdotdot*]
           (print *dotdotdot*)))
 
+(def t1 (not (print "love")))
+(def t2 (len (get {1 2 3 4} 3)))
+
+
 ;;(def b (if 1 2 3))
 
 ;; (defn plus [a b]

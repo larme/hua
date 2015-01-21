@@ -141,6 +141,22 @@
                                       [(, key value) (.items self.hash-part)]))]]
           (+ array-list hash-part))))]])
 
+(defclass Op [Expr]
+  [[tag "Op"]
+   [--init--
+    (fn [self opid e1 &optional [e2 nil]]
+      (setv self.opid opid)
+      (setv self.e1 e1)
+      (setv self.e2 e2)
+      nil)]
+   [nodes
+    (with-decorator property
+      (defn nodes [self]
+        (let [[ret [self.opid self.e1]]]
+          (if self.e2
+            (+ ret [self.e2])
+            ret))))]])
+
 ;;; lhs
 (defclass Id [LHS]
   [[tag "Id"]

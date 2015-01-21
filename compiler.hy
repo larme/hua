@@ -284,6 +284,18 @@ Unlike python, only function/method call can be pure expression statement"
           (hy.macros.require entry self.module-name))
         (Result)))]
 
+   [compile-unary-operator
+    (with-decorator
+      (builds "not" )
+      (builds "len")
+      (fn [self expression]
+        (def ops {"not" "not" "len" "len"})
+        (def operator (.pop expression 0))
+        (def operand (.compile self (.pop expression 0)))
+        (+= operand (ast.Op (get ops operator)
+                            operand.expr))
+        operand))]
+
    [compile-expression
     (with-decorator (builds HyExpression)
       (fn [self expression]
