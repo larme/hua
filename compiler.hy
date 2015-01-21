@@ -65,7 +65,7 @@
         (if self.expr
           self.expr
           ;; FIXME
-          (ast.Id "None"))))]
+          (ast.Nil))))]
 
    [expr-as-stmt
     (fn [self]
@@ -414,7 +414,14 @@ Unlike python, only function/method call can be pure expression statement"
            (setv ret (.compile-symbol self glob))
            (setv ret (ast.Index ret (ast.String (ast-str local))))
            ret)
-          (ast.Id (ast-str symbol)))))]
+          (cond
+           [(= symbol "True") (ast.MLTrue)]
+           [(= symbol "False") (ast.MLFalse)]
+           [(or (= symbol "None")
+                (= symbol "nil"))
+            (ast.Nil)]
+           [(= symbol "DOTDOTDOT") (ast.Dots)]
+           [true (ast.Id (ast-str symbol))]))))]
 
    [compile-list
     (with-decorator (builds HyList)
@@ -430,7 +437,7 @@ Unlike python, only function/method call can be pure expression statement"
         (def arglist (.pop expression 0))
         (def (, ret -args defaults vararg)
           (.-parse-lambda-list self arglist))
-        (def args (list-comp (ast.Id (ast-str arg))
+        (def args (list-comp (. (.compile self arg) expr)
                              [arg -args]))
         (def body (Result))
 
