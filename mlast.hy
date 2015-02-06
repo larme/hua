@@ -57,7 +57,52 @@
                                [node self.nodes])]
             [nodes (lt->dict -nodes)]]
         (.update res nodes)
-        res))]])
+        (if (instance? Multi self)
+          nodes
+          res)))]])
+
+;;; return an ast tree as {tag=tag, nodes=[node1, node2, ...]} form
+;;; also "slice unquote" Multi ast
+(defn -to-ml-table-pass-1 [tree]
+  (cond [(instance? (, list tuple) tree)
+         (do
+          (def nodes [])
+          (for [node tree]
+            (def elt (-to-ml-table-pass-1 node))
+            ;; slice unquoting Multi ast
+            (if (and (instance? dict elt)
+                     (= (get elt "tag") "Multi"))
+              (+= nodes (get elt "nodes"))
+              (.append nodes elt)))
+          nodes)]
+        [(or (instance? Real tree)
+             (string? tree))
+         tree]
+        [(instance? ASTNode tree)
+         (do
+          (def res {"tag" tree.tag})
+          (def nodes (-to-ml-table-pass-1 tree.nodes))
+          (.update res {"nodes" nodes})
+          res)]))
+
+(defn -to-ml-table-pass-2 [tree]
+  (cond [(instance? (, list tuple) tree)
+         (lt->dict (list-comp (-to-ml-table-pass-2 node)
+                              [node tree]))]
+        [(instance? dict tree)
+         (let [[res {"tag" (get tree "tag")}]
+               [nodes (-to-ml-table-pass-2 (get tree "nodes"))]]
+           (.update res nodes)
+           res)]
+        [(or (instance? Real tree)
+             (string? tree))
+         tree]))
+
+(defn to-ml-table [tree]
+  (-> tree
+      -to-ml-table-pass-1
+      -to-ml-table-pass-2))
+
 
 (defclass Stat [ASTNode])
 
@@ -175,16 +220,44 @@
       (setv self.nodes [expr])
       nil)]])
 
+;;; not a metalua AST, just for multiple assignment/return
+(defclass Multi [Expr]
+  [[tag "Multi"]
+   [--init--
+    (fn [self exprs]
+      (setv self.exprs exprs)
+      nil)]
+   [nodes
+    (with-decorator property
+      (fn [self]
+        (def ret (cond [(coll? self.exprs)
+                        self.exprs]
+                       [true
+                        [self.exprs]]))
+        ret))]])
+
+(defn convert-to-multi [node]
+  (cond [(instance? Multi node)
+         node]
+        [(instance? Expr node)
+         (Multi [node])]
+        [(coll? node)
+         (Multi node)]))
+
 ;;; lhs
 (defclass Id [LHS]
   [[tag "Id"]
    [--init--
-    (fn [self ident]
-      (setv self.nodes [ident])
+    (fn [self name]
+      (setv self.name name)
       nil)]
    [--repr--
     (fn [self]
-      (% (.gen-repr-template self) (get self.nodes 0)))]])
+      (% (.gen-repr-template self) self.name))]
+   [nodes
+    (with-decorator property
+      (fn [self]
+        [self.name]))]])
 
 (defclass Index [LHS]
   [[tag "Index"]
@@ -197,9 +270,14 @@
 (defclass Set [Stat]
   [[tag "Set"]
    [--init--
-    (fn [self idents exprs]
-      (setv self.nodes [idents exprs])
-      nil)]])
+    (fn [self lhss rhss]
+      (setv self.lhss (convert-to-multi lhss))
+      (setv self.rhss (convert-to-multi rhss))
+      nil)]
+   [nodes
+    (with-decorator property
+      (fn [self]
+        [[self.lhss] [self.rhss]]))]])
 
 (defclass If [Stat]
   [[tag "If"]
@@ -212,12 +290,18 @@
 (defclass Local [Stat]
   [[tag "Local"]
    [--init--
-    (fn [self idents &optional [exprs nil]]
-      (setv self.nodes [idents])
-      (if (nil? exprs)
-        (.append self.nodes [])
-        (.append self.nodes exprs))
-      nil)]])
+    (fn [self lhss &optional [rhss nil]]
+      (setv self.lhss (convert-to-multi lhss))
+      (setv self.rhss (convert-to-multi rhss))
+      nil)]
+   [nodes
+    (with-decorator property
+      (fn [self]
+        (def lhss-nodes [self.lhss])
+        (def rhss-nodes (if (nil? self.rhss)
+                          []
+                          [self.rhss]))
+        [lhss-nodes rhss-nodes]))]])
 
 (defclass Return [Stat]
   [[tag "Return"]

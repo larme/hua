@@ -79,15 +79,24 @@ Unlike python, only function/method call can be pure expression statement"
         (Result)))]
 
    [rename
-    (fn [self new-name-]
+    (fn [self new-names-]
       "Rename the Result's temporary variables to a `new-name`"
-      (let [[new-name (ast-str new-name-)]]
-        (for [var self.temp-vars]
-          (if (instance? ast.Id var)
-            (setv var.nodes [new-name])
-            ;; FIXME
-            "nothing"))
-        (setv self.temp-vars [])))]
+      (def new-names (if (coll? new-names-)
+                       (list-comp (ast-str new-name-)
+                                  [new-name- new-names-])
+                       [new-names-]))
+
+      (for [var self.temp-vars]
+        (cond [(instance? ast.Id var)
+               (setv var.nodes (get new-names 0))]
+              [(instance? ast.Multi var)
+               (do
+                (def new-ids (list-comp (ast.Id new-name)
+                                        [new-name new-names]))
+                (setv var.exprs new-ids))]
+              [true
+               (raise "FIXME")]))
+      (setv self.temp-vars []))]
 
    [--add--
     (fn [self other]
@@ -220,7 +229,7 @@ Unlike python, only function/method call can be pure expression statement"
               (setv name name.expr))
 
       ;;; FIXME multiple assign, index etc.
-      (cond [(instance? (, ast.Id ast.Index) name)
+      (cond [(instance? (, ast.Id ast.Index ast.Multi) name)
              name]
             [true
              (print "FIXME: type error")]))]
@@ -254,16 +263,16 @@ Unlike python, only function/method call can be pure expression statement"
               [ret condition]
               
               [var-name (.get-anon-var self)]
-              [var (ast.Id var-name)]
+              [var (ast.Multi (ast.Id var-name))]
 
-              [expr-name (ast.Id (ast-str var-name))]]
+              [expr-name (ast.Multi (ast.Id (ast-str var-name)))]]
 
           ;; we won't test if statements in body or orel because lua doesn't have official ternary operator support
 
           ;;          (+= ret (ast.Local [var]))
-          (setv ret (+ (Result) (ast.Local [var]) ret))
-          (+= body (ast.Set [var] [body.force-expr]))
-          (+= orel (ast.Set [var] [orel.force-expr]))
+          (setv ret (+ (Result) (ast.Local var) ret))
+          (+= body (ast.Set var body.force-expr))
+          (+= orel (ast.Set var orel.force-expr))
           (+= ret (ast.If ret.force-expr body.stmts orel.stmts))
           (+= ret (apply Result []
                          {"expr" expr-name "temp_vars" [expr-name
@@ -275,6 +284,15 @@ Unlike python, only function/method call can be pure expression statement"
 
    ;;; FIXME import/require
 
+   [compile-multi
+    (with-decorator (builds ",")
+      (fn [self expr]
+        (.pop expr 0)
+        (def (, elts ret) (.-compile-collect self expr))
+        (def multi (ast.Multi elts))
+        (+= ret multi)
+        ret))]
+   
    [compile-require-macro
     (with-decorator (builds "require_macro")
       (fn [self expression]
@@ -410,18 +428,22 @@ Unlike python, only function/method call can be pure expression statement"
 
       ;;; FIXME test builtin
       (setv result (.compile self result))
-      (setv ld-name (.compile self name))
-      
-      (if (and (not (empty? result.temp-vars))
-               (instance? HyString name)
-               (not (in "." name)))
-        (.rename result name)
-        (do
-         (setv st-name (.-storeize self ld-name))
-         (+= result (ast.Local [st-name]
-                               [result.force-expr]))))
+      (setv ident (.compile self name))
 
-      (+= result ld-name)
+      (if (and (empty? ident.stmts)
+               (instance? (, ast.Multi ast.Id) ident.expr))
+        (setv ident ident.expr)
+        (raise "FIXME: identities required"))
+      
+      (if (empty? result.temp-vars)
+        (+= result (ast.Local ident
+                              result.force-expr))
+        (.rename result (if (instance? ast.Id ident)
+                          ident.name
+                          (list-comp (. idn name)
+                                     [idn ident.nodes]))))
+
+      (+= result ident)
       result)]
 
    [compile-local-expression

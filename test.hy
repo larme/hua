@@ -21,6 +21,7 @@
 
 (import [hy.importer [import-file-to-hst]])
 (import [compiler [HuaASTCompiler]])
+(import [mlast [to-ml-table]])
 (import [lua [tlast->src]])
 
 (def result (let [[hst (import-file-to-hst "test.hua")]
@@ -31,7 +32,8 @@
                                 ;(print "test results stmts: " (. result stmts [0] __dict__))
                                 ;(print "test results expr: " result.expr)
                                 ;(print "haha: " (.to-table (. result stmts [0])))
-(setv stmts (list-comp (.to-ml-table stmt) [stmt result.stmts]))
+(setv stmts (to-ml-table result.stmts))
+(print "stmts:" stmts)
 (print (tlast->src stmts))
 
 
