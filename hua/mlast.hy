@@ -1,6 +1,6 @@
 (import [numbers [Real]])
 
-(import [lua [lt->dict]])
+(import [hua.lua [lt->dict]])
 
 (def *op-ids* {:+ "add"
                :- "sub"

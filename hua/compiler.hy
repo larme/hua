@@ -9,9 +9,9 @@
 
 (import hy.macros)
 
-(import mlast)
+(import hua.mlast)
 
-(setv ast mlast)
+(setv ast hua.mlast)
 
 (def -compile-table {})
 

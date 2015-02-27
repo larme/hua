@@ -10,21 +10,6 @@
 
 (def lua (init-lua))
 
-(let [[lua-package-table (.require lua "package")]
-      [lua-package-path (. lua-package-table path)]]
-  (assoc lua-package-table
-         "path"
-         (+ lua-package-path
-            ";"
-            (+ current-path
-               "/metalua/?.lua"))))
-
-(print (-> lua
-           (.require "package")
-           (. path)))
-
-(def lua-astc (.new (.require lua "metalua.compiler")))
-
 (defn -dict? [o]
   "if o is an instance of dictionary"
   (instance? dict o))
@@ -56,13 +41,16 @@
 
 
 (def tlua (init-lua))
-(def tlcode (.require tlua "tlcode"))
 (let [[lua-package-table (.require tlua "package")]
       [lua-package-path (. lua-package-table path)]]
   (assoc lua-package-table
          "path"
          (+ lua-package-path
             ";"
-            current-path)))
+            current-path
+            "/?.lua")))
+
+(def tlcode (.require tlua "tlcode"))
+
 (defn tlast->src [ast-table]
   (tlcode.generate (.table-from tlua (-dict->ltable tlua ast-table))))
