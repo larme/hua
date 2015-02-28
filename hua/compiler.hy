@@ -453,6 +453,13 @@ Unlike python, only function/method call can be pure expression statement"
               [result (get expression 2)]]
           (setv result (.compile self result))
           (setv ld-name (.compile self name))
+
+          (when (and (instance? ast.Multi ld-name.expr)
+                     (not (empty? result.temp-vars)))
+            (.rename result
+                     (list-comp (.get-anon-var self)
+                                [i (range (.count ld-name.expr))])))
+          
           ;; FIXME do we need this? (setv st-name (.-storeize self ld-name))
           (+= result (ast.Set [ld-name.expr]
                               [result.force-expr]))

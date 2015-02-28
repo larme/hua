@@ -234,7 +234,10 @@
                         self.exprs]
                        [true
                         [self.exprs]]))
-        ret))]])
+        ret))]
+   [count
+    (fn [self]
+      (len self.nodes))]])
 
 (defn convert-to-multi [node]
   (cond [(instance? Multi node)
