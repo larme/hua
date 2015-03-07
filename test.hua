@@ -115,3 +115,8 @@
          (+ 1 2)
          (inc 4))
         2))
+
+(setv (, a b) (if true (1, 2) (3, 4)))
+
+(for* [(, x y) (pairs {1 2 3 4})]
+  (print x))

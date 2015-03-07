@@ -290,6 +290,19 @@
       (+= self.nodes rest)
       nil)]])
 
+(defclass Forin [Stat]
+  [[tag "Forin"]
+   [--init--
+    (fn [self target iterable body]
+      (setv self.target (convert-to-multi target))
+      (setv self.iterable iterable)
+      (setv self.body body)
+      nil)]
+   [nodes
+    (with-decorator property
+      (fn [self]
+        [[self.target] [self.iterable] self.body]))]])
+
 (defclass Local [Stat]
   [[tag "Local"]
    [--init--

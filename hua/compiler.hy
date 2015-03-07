@@ -465,6 +465,34 @@ Unlike python, only function/method call can be pure expression statement"
                               [result.force-expr]))
           result)))]
 
+   [compile-for-expression
+    (with-decorator (builds "for*")
+      (fn [self expression]
+        (.pop expression 0)
+        (def args (.pop expression 0))
+        (when (not (instance? HyList args))
+          (raise (.format "FIXME for expects a list, received `{0}'"
+                          (. (type args) --name--))))
+        ;; FIXME for args number checkign
+        (def (, target-name iterable) args)
+
+        (def target (.-storeize self (.compile self target-name)))
+
+        (def ret (Result))
+
+        ;; (for* [] body)
+
+        (+= ret (.compile self iterable))
+
+        (def body (.-compile-branch self expression))
+        (+= body (.expr-as-stmt body))
+
+        (+= ret (ast.Forin target ret.force-expr body.stmts))
+        (import [mlast [to-ml-table -to-ml-table-pass-1]])
+        (print (get (-to-ml-table-pass-1 (get ret.stmts 0)) "nodes"))
+        (print (to-ml-table ret))
+        ret))]
+
    [compile-integer
     (with-decorator (builds HyInteger)
       (fn [self number]
