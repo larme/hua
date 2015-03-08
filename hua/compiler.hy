@@ -480,8 +480,11 @@ Unlike python, only function/method call can be pure expression statement"
                                 [i (range (.count ld-name.expr))])))
           
           ;; FIXME do we need this? (setv st-name (.-storeize self ld-name))
-          (+= result (ast.Set [ld-name.expr]
-                              [result.force-expr]))
+
+          (setv result (+ result
+                          ld-name
+                          (ast.Set [ld-name.expr]
+                                   [result.force-expr])))
           result)))]
 
    [compile-for-expression
