@@ -284,6 +284,25 @@ Unlike python, only function/method call can be pure expression statement"
 
    ;;; FIXME import/require
 
+   [compile-index-expression
+    (with-decorator (builds "get")
+      (fn [self expr]
+        (.pop expr 0)
+
+        (def val (.compile self (.pop expr 0)))
+        (def (, indexes ret) (.-compile-collect self expr))
+
+        (when (not (empty? val.stmts))
+          (+= ret val))
+
+        (for [index indexes]
+          (setv val (+ (Result)
+                       (ast.Index val.force-expr
+                                  index))))
+
+        (+ ret val)
+        ))]
+
    [compile-multi
     (with-decorator (builds ",")
       (fn [self expr]
