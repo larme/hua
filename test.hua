@@ -120,3 +120,13 @@
 
 (for* [(, x y) (pairs {1 2 3 4})]
   (print x))
+
+(require-macro hua.core.macros)
+
+(defn plus [x y]
+  (+ x y))
+
+(for [(, x y) z
+      m k]
+  (+ x y m)
+  (print x y m))
