@@ -150,3 +150,8 @@
   (if (not true)
     (+ 3 4)
     (print "hey"))))
+
+(print
+ (let [[x 1]
+       [y (if a-bool 3 4)]]
+   (+ x y)))

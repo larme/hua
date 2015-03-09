@@ -30,6 +30,24 @@
      (def args-iter (iter args))
      ((for-helper body) args-iter))]))
 
+(defmacro let [variables &rest body]
+  "Execute `body` in the lexical context of `variables`"
+  (def macroed-variables [])
+  (if (not (isinstance variables HyList))
+    (macro-error variables "let lexical context must be a list"))
+  (for* [variable variables]
+    (if (isinstance variable HyList)
+      (do
+       (if (!= (len variable) 2)
+         (macro-error variable "let variable assignments must contain two items"))
+       (.append macroed-variables `(def ~(get variable 0) ~(get variable 1))))
+      (if (isinstance variable HySymbol)
+        (.append macroed-variables `(def ~variable None))
+        (macro-error variable "let lexical context element must be a list or symbol"))))
+  `(do-block ~@macroed-variables
+             ~@body))
+
+
 (defmacro-alias [defn defun] [name lambda-list &rest body]
   "define a function `name` with signature `lambda-list` and body `body`"
   (if (not (= (type name) HySymbol))
