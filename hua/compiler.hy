@@ -591,12 +591,17 @@ Unlike python, only function/method call can be pure expression statement"
    [compile-dict
     (with-decorator (builds HyDict)
       (fn [self m]
-        (setv (, kv ret) (.-compile-collect self m))
-        (setv half-length (int (/ (len kv) 2)))
-        (setv hash-part (dict-comp (get kv (* 2 i))
-                                   (get kv (inc (* 2 i)))
-                                   [i (range half-length)]))
-        (+= ret (ast.Table nil hash-part))
+        (def (, kv ret) (.-compile-collect self m))
+        (def length (len kv))
+        (if (= length 1)
+          (+= ret (ast.Table kv  nil))
+          (do
+           (setv half-length (int (/ length 2)))
+           (setv hash-part (dict-comp (get kv (* 2 i))
+                                      (get kv (inc (* 2 i)))
+                                      [i (range half-length)]))
+           (+= ret (ast.Table nil hash-part))           ))
+
         ret))]
    ])
 
