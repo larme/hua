@@ -251,6 +251,21 @@ Unlike python, only function/method call can be pure expression statement"
         (.pop expression 0)
         (.-compile-branch self expression)))]
 
+   [compile-do-block
+    (with-decorator (builds "do_block")
+      (fn [self expression]
+        (.pop expression 0)
+        (def branch (.-compile-branch self expression))
+        (def var-name (.get-anon-var self))
+        (def var (ast.Multi (ast.Id var-name)))
+        (+= branch (ast.Set var branch.force-expr))
+        (+ (Result)
+           (ast.Local var)
+           (ast.Do branch.stmts)
+           (apply Result
+                  []
+                  {"expr" var "temp_vars" [var]}))))]
+
    [compile-if
     (with-decorator (builds "if")
       (fn [self expression]

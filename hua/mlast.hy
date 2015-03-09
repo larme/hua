@@ -270,6 +270,13 @@
       nil)]])
 
 ;;; Statements
+(defclass Do [Stat]
+  [[tag "Do"]
+   [--init--
+    (fn [self stats]
+      (setv self.nodes stats)
+      nil)]])
+
 (defclass Set [Stat]
   [[tag "Set"]
    [--init--
