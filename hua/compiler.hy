@@ -511,8 +511,6 @@ Unlike python, only function/method call can be pure expression statement"
 
         (+= ret (ast.Forin target ret.force-expr body.stmts))
         (import [mlast [to-ml-table -to-ml-table-pass-1]])
-        (print (get (-to-ml-table-pass-1 (get ret.stmts 0)) "nodes"))
-        (print (to-ml-table ret))
         ret))]
 
    [compile-integer
