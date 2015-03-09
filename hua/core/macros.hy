@@ -26,8 +26,9 @@
    [(empty? args) `(do ~@body)]
    [(= (len args) 2)  `(for* [~@args] ~@body)]
    [true
-    (let [[args-iter (iter args)]]
-      ((for-helper body) args-iter))]))
+    (do
+     (def args-iter (iter args))
+     ((for-helper body) args-iter))]))
 
 (defmacro-alias [defn defun] [name lambda-list &rest body]
   "define a function `name` with signature `lambda-list` and body `body`"
