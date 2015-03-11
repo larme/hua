@@ -155,3 +155,12 @@
  (let [[x 1]
        [y (if a-bool 3 4)]]
    (+ x y)))
+
+(for [x [1 11 3]]
+  (print x))
+
+(for [x [1 16]]
+  (print x))
+
+(for [x [(if true 3 4) 1 (+ 14 y)]]
+  (print x))

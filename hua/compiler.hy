@@ -515,17 +515,19 @@ Unlike python, only function/method call can be pure expression statement"
 
         (def target (.-storeize self (.compile self target-name)))
 
-        (def ret (Result))
-
-        ;; (for* [] body)
-
-        (+= ret (.compile self iterable))
-
         (def body (.-compile-branch self expression))
         (+= body (.expr-as-stmt body))
 
-        (+= ret (ast.Forin target ret.force-expr body.stmts))
-        (import [mlast [to-ml-table -to-ml-table-pass-1]])
+        (def ret (Result))
+        (+= ret (.compile self iterable))
+
+        ;; two form of for
+        ;; generic for: (for* [expr iterable] body)
+        ;; numeric for: (for* [expr [init final step]] body)
+
+        (if (is HyList (type iterable)) ; this looks ugly, but it prevent HyExpression go into the true branch
+          (+= ret (ast.Fornum target ret.force-expr.nodes body.stmts))
+          (+= ret (ast.Forin target ret.force-expr body.stmts)))
         ret))]
 
    [compile-integer

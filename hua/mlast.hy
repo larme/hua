@@ -297,6 +297,13 @@
       (+= self.nodes rest)
       nil)]])
 
+(defclass Fornum [Stat]
+  [[tag "Fornum"]
+   [--init--
+    (fn [self target expr-list body]
+      (setv self.nodes (+ [target] expr-list [body]))
+      nil)]])
+
 (defclass Forin [Stat]
   [[tag "Forin"]
    [--init--
