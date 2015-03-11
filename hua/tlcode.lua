@@ -107,11 +107,19 @@ local function code_parlist (parlist, i)
   return table.concat(l, ", ")
 end
 
+local function is_simple_key (key)
+  return key.tag == "String" and key[1]:match("^[a-zA-Z_][a-zA-Z0-9_]*$")
+end
+
 local function code_fieldlist (fieldlist, i)
   local l = {}
   for k, v in ipairs(fieldlist) do
     if v.tag == "Pair" then
-      l[k] = "[" .. code_exp(v[1], i) .. "] = " .. code_exp(v[2], i)
+      if is_simple_key(v[1]) then
+	l[k] = v[1][1] .. " = " .. code_exp(v[2], i)
+      else
+	l[k] = "[" .. code_exp(v[1], i) .. "] = " .. code_exp(v[2], i)
+      end
     else
       l[k] = code_exp(v, i)
     end
@@ -128,7 +136,11 @@ function code_var (var, i)
       local v = { tag = "Id", [1] = var[2][1] }
       return code_exp(v, i)
     else
-      return code_exp(var[1], i) .. "[" .. code_exp(var[2], i) .. "]"
+      if is_simple_key(var[2]) then
+	return code_exp(var[1], i) .. "." .. var[2][1]
+      else
+	return code_exp(var[1], i) .. "[" .. code_exp(var[2], i) .. "]"
+      end
     end
   else
     error("trying to generate code for a variable, but got a " .. tag)
@@ -173,12 +185,12 @@ function code_exp (exp, i)
     local str = ""
     if exp[3] then
       if _VERSION == "Lua 5.3" then
-        if exp[2].tag == "Call" and exp[2][1].tag == "Index" and
-           exp[2][1][1].tag == "Id" and exp[2][1][1][1] == "_ENV" and
-           exp[2][1][2].tag == "String" and exp[2][1][2][1] == "type" and
-           exp[3].tag == "String" and exp[3][1] == "integer" then
-          str = "math."
-        end
+	if exp[2].tag == "Call" and exp[2][1].tag == "Index" and
+	  exp[2][1][1].tag == "Id" and exp[2][1][1][1] == "_ENV" and
+	  exp[2][1][2].tag == "String" and exp[2][1][2][1] == "type" and
+	exp[3].tag == "String" and exp[3][1] == "integer" then
+	  str = "math."
+	end
       end
       str = str .. code_exp(exp[2], i) .. op[exp[1]] .. code_exp(exp[3], i)
     else
@@ -193,7 +205,7 @@ function code_exp (exp, i)
   elseif tag == "Invoke" then
     return code_invoke(exp, i)
   elseif tag == "Id" or
-         tag == "Index" then
+  tag == "Index" then
     return code_var(exp, i)
   else
     error("trying to generate code for a expression, but got a " .. tag)
@@ -233,13 +245,13 @@ function code_stm (stm, i)
     local len = #stm
     if len % 2 == 0 then
       for k=3, len, 2 do
-        str = str .. ident("elseif ", i) .. code_exp(stm[k], 0) .. " then\n"
-        str = str .. code_block(stm[k+1], i)
+	str = str .. ident("elseif ", i) .. code_exp(stm[k], 0) .. " then\n"
+	str = str .. code_block(stm[k+1], i)
       end
     else
       for k=3, len-1, 2 do
-        str = str .. ident("elseif ", i) .. code_exp(stm[k], 0) .. " then\n"
-        str = str .. code_block(stm[k+1], i)
+	str = str .. ident("elseif ", i) .. code_exp(stm[k], 0) .. " then\n"
+	str = str .. code_block(stm[k+1], i)
       end
       str = str .. ident("else\n", i)
       str = str .. code_block(stm[len], i)
