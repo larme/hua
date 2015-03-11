@@ -1,5 +1,6 @@
 (import argparse)
 (import sys)
+(import os.path)
 
 (import [hy.importer [import-file-to-hst]])
 (import [hua.compiler [HuaASTCompiler]])
@@ -25,4 +26,7 @@
   ;; FIXME
   (def stmts (to-ml-table result-ast.stmts))
   (def result (tlast->src stmts))
-  (print result))
+  (def (, basename extname) (os.path.splitext filename))
+  (def lua-filename (+ basename ".lua"))
+  (with [[lua-f (open lua-filename "w")]]
+        (.write lua-f result)))
