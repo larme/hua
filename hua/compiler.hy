@@ -403,7 +403,7 @@ Unlike python, only function/method call can be pure expression statement"
           (do
            (def arg (get expression 1))
            (def ret (.compile self arg))
-           (ret += (ast.Op "sub" ret.force-expr))
+           (+= ret (ast.Op "sub" ret.force-expr))
            ret))))]
 
    [compile-expression
