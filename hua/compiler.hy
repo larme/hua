@@ -394,6 +394,18 @@ Unlike python, only function/method call can be pure expression statement"
                                expression))
            (.compile-binary-operators self expr)))))]
 
+   [compile-sub-expression
+    (with-decorator
+      (builds "-")
+      (fn [self expression]
+        (if (> (len expression) 2)
+          (.compile-binary-operators self expression)
+          (do
+           (def arg (get expression 1))
+           (def ret (.compile self arg))
+           (ret += (ast.Op "sub" ret.force-expr))
+           ret))))]
+
    [compile-expression
     (with-decorator (builds HyExpression)
       (fn [self expression]
