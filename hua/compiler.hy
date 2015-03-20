@@ -314,9 +314,8 @@ Unlike python, only function/method call can be pure expression statement"
           (setv val (+ (Result)
                        (ast.Index val.force-expr
                                   index))))
-
-        (+ ret val)
-        ))]
+        
+        (+ ret val)))]
 
    [compile-multi
     (with-decorator (builds ",")
@@ -425,7 +424,15 @@ Unlike python, only function/method call can be pure expression statement"
                          (setv ret (.compile-atom self fun expression))
                          (if (not (nil? ret))
                            ret
-                           (.-compile-fun-call self expression)))]))])))]
+                           (.-compile-fun-call self expression)))]
+                       [true
+                        (let [[func (.compile self fun)]]
+                          (def (, args ret)
+                            (.-compile-collect self
+                                               (slice expression 1)))
+                          (def call (ast.Call func.expr
+                                              args))
+                          (+ func ret call))]))])))]
 
    [-compile-fun-call
     (fn [self expression]
