@@ -335,6 +335,19 @@ Unlike python, only function/method call can be pure expression statement"
           (hy.macros.require entry self.module-name))
         (Result)))]
 
+   [compile-compare-op-expression
+    (with-decorator
+      (builds "=*")
+      (builds "<*")
+      (builds "<=*")
+      (fn [self expression]
+        (def operator (.pop expression 0))
+        (def op-id (ast.get-op-id operator))
+        (def (, exprs ret) (.-compile-collect self expression))
+        (+ ret (ast.Op op-id
+                       (get exprs 0)
+                       (get exprs 1)))))]
+   
    [compile-unary-operator
     (with-decorator
       (builds "not" )

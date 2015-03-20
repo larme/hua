@@ -1,4 +1,6 @@
-(require-macro test-macro)
+(require-macro hua.core.macros)
+(require-macro hua.core.op)
+
 
 (def a (if 1
          (if true (setv c 2)
@@ -121,8 +123,6 @@
 (for* [(, x y) (pairs {1 2 3 4})]
   (print x))
 
-(require-macro hua.core.macros)
-
 (defn plus [x y]
   (+ x y))
 
@@ -164,3 +164,13 @@
 
 (for [x [(if true 3 4) 1 (+ 14 y)]]
   (print x))
+
+(def z (= 1 (if true 3 4)))
+
+(def y (= 1 2 3))
+
+(def x (= 1 2 3 (if true 3 4)  5 6))
+
+(def l (< 3 2 1 0))
+
+(def g (> 3 2 1 0))
