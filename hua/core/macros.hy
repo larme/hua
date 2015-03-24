@@ -56,10 +56,3 @@
     (macro-error name "defn/defun takes a parameter list as second argument"))
   `(def ~name (fn ~lambda-list ~@body)))
 
-(defmacro assoc [table &rest indexes-and-value]
-  (def last-index (dec (len indexes-and-value)))
-  (def indexes (slice indexes-and-value
-                      0
-                      last-index))
-  (def value (get indexes-and-value last-index))
-  `(setv (get ~table ~@indexes) ~value))
