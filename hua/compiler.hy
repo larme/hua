@@ -5,7 +5,8 @@
         [hy.models.string [HyString]]
         [hy.models.symbol [HySymbol]]
         [hy.models.list [HyList]]
-        [hy.models.dict [HyDict]])
+        [hy.models.dict [HyDict]]
+        [hy.compiler [checkargs]])
 
 (import hy.macros)
 
@@ -267,7 +268,9 @@ Unlike python, only function/method call can be pure expression statement"
                   {"expr" var "temp_vars" [var]}))))]
 
    [compile-if
-    (with-decorator (builds "if")
+    (with-decorator
+      (builds "if")
+      (apply checkargs [] {"min" 2 "max" 3})
       (fn [self expression]
         (.pop expression 0)
         (let [[condition (.compile self (.pop expression 0))]
@@ -300,7 +303,9 @@ Unlike python, only function/method call can be pure expression statement"
    ;;; FIXME import/require
 
    [compile-index-expression
-    (with-decorator (builds "get")
+    (with-decorator
+      (builds "get")
+      (apply checkargs [] {"min" 2})
       (fn [self expr]
         (.pop expr 0)
 
@@ -340,6 +345,7 @@ Unlike python, only function/method call can be pure expression statement"
       (builds "=*")
       (builds "<*")
       (builds "<=*")
+      (checkargs 2)
       (fn [self expression]
         (def operator (.pop expression 0))
         (def op-id (ast.get-op-id operator))
@@ -352,6 +358,7 @@ Unlike python, only function/method call can be pure expression statement"
     (with-decorator
       (builds "not" )
       (builds "len")
+      (checkargs 1)
       (fn [self expression]
         (def operator (.pop expression 0))
         (def op-id (ast.get-op-id operator))
@@ -482,7 +489,9 @@ Unlike python, only function/method call can be pure expression statement"
       (+ func ret call))]
 
    [compile-def-expression
-    (with-decorator (builds "def")
+    (with-decorator
+      (builds "def")
+      (checkargs 2)
       (fn [self expression]
         (.-compile-define self
                           (get expression 1)
@@ -513,7 +522,9 @@ Unlike python, only function/method call can be pure expression statement"
       result)]
 
    [compile-setv-expression
-    (with-decorator (builds "setv")
+    (with-decorator
+      (builds "setv")
+      (checkargs 2)
       (fn [self expression]
         (let [[name (get expression 1)]
               [result (get expression 2)]]
@@ -535,7 +546,9 @@ Unlike python, only function/method call can be pure expression statement"
           result)))]
 
    [compile-for-expression
-    (with-decorator (builds "for*")
+    (with-decorator
+      (builds "for*")
+      (apply checkargs [] {"min" 1})
       (fn [self expression]
         (.pop expression 0)
         (def args (.pop expression 0))
@@ -606,7 +619,10 @@ Unlike python, only function/method call can be pure expression statement"
         ret))]
 
    [compile-function-def
-    (with-decorator (builds "lambda") (builds "fn")
+    (with-decorator
+      (builds "lambda")
+      (builds "fn")
+      (apply checkargs [] {"min" 1})
       (fn [self expression]
         (.pop expression 0)
         (def arglist (.pop expression 0))
