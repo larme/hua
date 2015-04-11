@@ -174,3 +174,28 @@
 (def l (< 3 2 1 0))
 
 (def g (> 3 2 1 0))
+
+(require-macro hua.core.assignment)
+(require-macro hua.core.comp)
+
+(setv (get t 1) (do (print "ha") (* 2 3)))
+(assoc t 1 (do (print "ha") (* 2 3)))
+
+(def x
+  (list-comp (do
+              (print x)
+              (* x 2))
+             [(, _ x) (ipairs [1 2 3])]))
+
+(def y
+  (list-comp (do
+              (print x)
+              (* x 3))
+             [(, _ x) (ipairs [1 2 3 4])]
+             (if x > 1)))
+
+(def t
+  (dict-comp
+   x
+   (* x 2)
+   [x (iparis [1 2 3 4 5])]))
