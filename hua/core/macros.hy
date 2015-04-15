@@ -1,6 +1,9 @@
 (import [hy.models.list [HyList]]
         [hy.models.symbol [HySymbol]])
 
+(defmacro first [coll]
+  `(get ~coll 1))
+
 (defn for-helper [body]
   (defn for-helper* [args-iter]
     (try
