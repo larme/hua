@@ -4,6 +4,9 @@
 (defmacro first [coll]
   `(get ~coll 1))
 
+(defmacro apply [f args]
+  `(~f (unpack ~args)))
+
 (defn for-helper [body]
   (defn for-helper* [args-iter]
     (try
