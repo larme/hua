@@ -60,5 +60,7 @@
     (macro-error name "defn/defun takes a name as first argument"))
   (if (not (isinstance lambda-list HyList))
     (macro-error name "defn/defun takes a parameter list as second argument"))
-  `(def ~name (fn ~lambda-list ~@body)))
+  `(do
+    (def ~name nil)
+    (setv ~name (fn ~lambda-list ~@body))))
 
