@@ -18,6 +18,9 @@
                         package.path
                         ~this-path)))
 
+;;; import standard library
+(defmacro --hua-import-stdlib-- []
+  `(hua-import [hua_stdlib [apply dec first inc]]))
 
 ;;; a macro to import all core macros
 
@@ -35,4 +38,5 @@
   `(do
     (--hua-add-stdlib-path--)
     (--hua-def-unpack--)
-    (--hua-init-macros--)))
+    (--hua-init-macros--)
+    (--hua-import-stdlib--)))
