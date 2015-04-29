@@ -653,6 +653,15 @@ Unlike python, only function/method call can be pure expression statement"
                               body.stmts))
         ret))]
 
+   [compile-return
+    (with-decorator
+      (builds "return")
+      (apply checkargs [] {"min" 1})
+      (fn [self expression]
+        (.pop expression 0)
+        (def (, return-exprs ret) (.-compile-collect self expression))
+        (+ ret (ast.Return return-exprs))))]
+
    [compile-dict
     (with-decorator (builds HyDict)
       (fn [self m]
