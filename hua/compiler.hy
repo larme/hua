@@ -129,7 +129,13 @@ Unlike python, only function/method call can be pure expression statement"
       (+= ret result))
     ret))
 
-;;; FIXME: checkargs
+(defn -assign-expr-for-result [result var expr]
+  "If the result's last statement is not ast.Return, append an ast.Set statement of assigning var to expr to the result."
+  (when (or (empty? result.stmts)
+            (not (instance? ast.Return
+                            (get result.stmts -1))))
+    (+= result (ast.Set var expr)))
+  result)
 
 (defclass HuaASTCompiler [object]
   [[--init--
@@ -259,7 +265,8 @@ Unlike python, only function/method call can be pure expression statement"
         (def branch (.-compile-branch self expression))
         (def var-name (.get-anon-var self))
         (def var (ast.Multi (ast.Id var-name)))
-        (+= branch (ast.Set var branch.force-expr))
+        (setv branch
+              (-assign-expr-for-result branch var branch.force-expr))
         (+ (Result)
            (ast.Local var)
            (ast.Do branch.stmts)
@@ -289,8 +296,10 @@ Unlike python, only function/method call can be pure expression statement"
 
           ;;          (+= ret (ast.Local [var]))
           (setv ret (+ (Result) (ast.Local var) ret))
-          (+= body (ast.Set var body.force-expr))
-          (+= orel (ast.Set var orel.force-expr))
+          (setv body
+                (-assign-expr-for-result body var body.force-expr))
+          (setv orel
+                (-assign-expr-for-result orel var orel.force-expr))
           (+= ret (ast.If ret.force-expr body.stmts orel.stmts))
           (+= ret (apply Result []
                          {"expr" expr-name "temp_vars" [expr-name
