@@ -31,7 +31,7 @@
     (require-macro hua.core.assignment)
     (require-macro hua.core.comp)
     (require-macro hua.core.oo)
-    (require-macro hua.core.import)))
+    (require-macro hua.core.module)))
 
 
 (defmacro --hua-initialize-- []
