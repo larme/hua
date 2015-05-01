@@ -1,4 +1,4 @@
-(import [hua.core.utils [hua-gensym]])
+(import [hua.core.utils [hua-gensym simple-form?]])
 
 ;;; compare operation with more than 2 arguments
 
@@ -24,12 +24,23 @@
 
        ;; if more than two arguments are given, we will expand to the form of (and (opstar e1 e2) (opstar e2 e3) ...)
        ;; The problems is that expressions like e2 will be evaluated twice. We need temporary variables to hold the evaluated value of e2.
-       (let [[temp-vars (list-comp (hua-gensym) [expr exprs])]
+       (let [[temp-vars (list-comp (if (simple-form? expr)
+                                     nil
+                                     (hua-gensym))
+                                   [expr exprs])]
              [binding-body (list-comp `(def ~(get temp-vars i) ~(get exprs i))
-                                      [i (range (len exprs))])]
-             [comparing-body (list-comp `(~op* ~(get temp-vars (- i 1))
-                                               ~(get temp-vars i))
-                                        [i (range 1 (len temp-vars))])]]
+                                      [i (range (len exprs))]
+                                      (not (nil? (get temp-vars i))))]
+             [compare-vars (list-comp (if (simple-form? expr)
+                                        expr
+                                        (hua-gensym))
+                                      [expr exprs])]
+             [comparing-body (list-comp `(~op* ~(get compare-vars (- i 1))
+                                               ~(get compare-vars i))
+                                        [i (range 1 (len compare-vars))])]]
+         (print `(do
+                  ~@binding-body
+                  (and ~@comparing-body)))
          `(do
            ~@binding-body
            (and ~@comparing-body))))))
