@@ -46,11 +46,15 @@
 (--def-hua-comp-op-- < <*)
 (--def-hua-comp-op-- <= <=*)
 
-(defmacro > [&rest exprs]
-  `(not (<= ~@exprs)))
+(defmacro >* [l r]
+  `(not (<=* ~l ~r)))
 
-(defmacro >= [&rest exprs]
-  `(not (< ~@exprs)))
+(defmacro >=* [l r]
+  `(not (<* ~l ~r)))
 
-(defmacro != [&rest exprs]
-  `(not (= ~@exprs)))
+(defmacro !=* [l r]
+  `(not (=* ~l ~r)))
+
+(--def-hua-comp-op-- > >*)
+(--def-hua-comp-op-- >= >=*)
+(--def-hua-comp-op-- != !=*)
