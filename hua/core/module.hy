@@ -1,4 +1,5 @@
 (import [hy.models.list [HyList]]
+        [hy.models.string [HyString]]
         [hy.models.symbol [HySymbol]]
         [hua.core.utils [hua-gensym]])
 
@@ -7,7 +8,7 @@
     (macro-error item "(import) requires a Symbol or a List"))
 
   (if (instance? HySymbol item)
-    `(require ~(string item))
+    `(require ~(HyString item))
     (cond [(= 2 (len item))
            (let [[module (get item 0)]
                  [syms (get item 1)]
@@ -16,17 +17,17 @@
                  [bindings (list-comp
                             `(setv ~sym
                                    (get --hua-import-m--
-                                        ~(string sym)))
+                                        ~(HyString sym)))
                             [sym syms])]]
              `(do
                ~@declares
-               (let [[--hua-import-m-- (require ~(string module))]]
+               (let [[--hua-import-m-- (require ~(HyString module))]]
                  ~@bindings)))]
           [(and (= 3 (len item))
-                (is (get item 1) :as))
+                (= (get item 1) :as))
            (let [[module (get item 0)]
                  [alias (get item 2)]]
-             `(def ~alias (require ~(string module))))]
+             `(def ~alias (require ~(HyString module))))]
           [true
            (macro-error item
                         "When the argument of (import) is a List, it need to be in one of the two following form: 1. [module [var1 var2 ...]] or 2. [module :as alias]")])))
@@ -41,7 +42,7 @@
 (defmacro export [&rest vars]
   (def module-var (hua-gensym "module"))
   (def assignments (list-comp `(assoc ~module-var
-                                      ~(string var)
+                                      ~(HyString var)
                                       ~var)
                               [var vars]))
   `(let [[~module-var {}]]

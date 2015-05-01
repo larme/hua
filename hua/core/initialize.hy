@@ -1,4 +1,5 @@
 (import os)
+(import [hy.models.string [HyString]])
 
 ;;; In case the future lua release removes the unpack function entirely
 
@@ -10,7 +11,7 @@
 
 (defmacro --hua-add-stdlib-path-- []
   (def this-path
-    (string
+    (HyString
      (os.path.dirname
       (os.path.realpath --file--))))
   `(setv package.path
