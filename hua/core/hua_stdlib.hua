@@ -1,4 +1,5 @@
 (require-macro hua.core.macros)
+(require-macro hua.core.module)
 
 (defn apply [f args]
   (f (unpack args)))
@@ -12,6 +13,7 @@
 (defn inc [n]
   (+ n 1))
 
-(def *export* {"apply" apply "dec" dec "first" first "inc" inc})
-
-(return *export*)
+(export apply
+        dec
+        first
+        inc)
