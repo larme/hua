@@ -1,0 +1,171 @@
+;;; Currently you need put these two lines below to the beginning of
+;;; each hua file. As it will requires some core hua macros like
+;;; `let', `for' etc.
+
+(require-macro "hua.core.initialize")
+(--hua-initialize--)
+
+;;; Require the macro `defsection' from in hy file "example-mac.hy"
+(require-macro "example-mac")
+
+;;; Simple assignments and arithmetic 
+(defsection "Simple Assignments and Arithmetic"
+  (def x 10)
+  (setv x 20)
+  ;; a global variable y is introduced
+  (setv y 40)
+  (setv z 20)
+
+  ;; arithmetic operators need not be binary
+  (print "Some arithmetic operations"
+         (+ x y z)
+         (< x y z) ; you can chain comparison operators
+         (- x)))
+
+;;; Table
+(defsection "Table as Dict and List"
+  ;; Lua has table as its only data structure. However in hua we still
+  ;; have dictionary and list syntax like hy.
+  (def a-table {"name" "John"})
+  (setv a-table.greeting "Hello, ")
+  (print (concat a-table.greeting
+                 a-table.name
+                 "!"))    ; `concat' works like .. in lua
+  (def a-list [1 2 3 4])
+  (print "a-list length:" (len a-list))
+
+  ;; access table use `get', use integer index for the array part and
+  ;; string index for the dict part
+  (setv a-table.l a-list)
+  (print "a-table.l[3]:" (get a-table "l" 3))
+
+  ;; change the value of a key in table using assoc
+  (assoc a-table "l" 3 13)
+  (print "a-table.l[3] after assoc change the value:"
+         (get a-table "l" 3)))
+
+(defsection "Statements"
+
+  ;; multiple assignment works in left hand side, use `unpack' in
+  ;; right hand side
+  (def (, m n) (unpack [1 2]))
+  (print "m, n:" m n)
+
+  ;; `if' and `cond' work like hy
+  (if (= x y)
+    (print "x is equal to y")
+    (print "x is not equal to y"))
+
+  (cond [(< z 20) (print "z is smaller than 20")]
+        [(= z 20) (print "z is equal to 20")]
+        [(> z 20) (print "z is larger than 20")]
+        [true (print "z is 42")])
+
+  ;; generic `for' works like hy. However table in lua is not
+  ;; iterable, you need `pairs' or `ipairs'
+  (for [(, i v) (ipairs [1 3 5])]
+    (print "index and value in list:" i v))
+
+  ;; numeric for
+  (for [i [1 11 2]]
+    (print "numeric for:" i))
+
+  ;; You can mix both syntax in one `for' expression
+  (for [i [1 3]
+        key (pairs {"pos" 3 "cons" 2})]
+    (print "mixed:" i key))
+
+  ;; You can do hy style list and dict comprehensive! They are just
+  ;; macros expanded to
+  (def l (list-comp (* i value)
+                  [i [1 10]
+                   (, _ value) (pairs {"T" 1 "F" 0})]))
+  (for [(, _ v) (ipairs l)]
+    (print "list comprehensive result:" v)))
+
+(defsection "Functions"
+  ;; Function definition
+  (defn double [n]
+    (* n 2))
+  (print "double of 21:" (double 21))
+
+  ;; You can use &rest keyword now. I may add support of &optional
+  ;; later, but lua makes &optional quite redundant.
+  ;; Notice that &rest arguments cannot contain `nil's
+
+  (defn print-alot [a &rest rest]
+    (print "first parameter:" a)
+    (for [(, i para) (ipairs rest)]
+      (print "rest parameter:"  para)))
+
+  (print-alot "That's" "really" "a" "lot")
+  (print-alot "That's" nil "really" "a" "lot")
+ 
+  ;; Normal function definition in hua cannot do proper tail calls,
+  ;; some recursive functions like below will blow the stack.
+  
+  (defn test-tco [n]
+    (if (> n 1)
+      (test-tco (- n 1))
+      (print "May overflow here, read the lua code to find out why")))
+  ;; Uncomment the following line to make a stack overflow error.
+  ;; (test-tco 10000000)
+
+  ;; To overcome this problem use `(return (f))' at the end of a
+  ;; branch. FIXME: make this part more clear.
+  
+  (defn test-tco2 [n]
+    (if (> n 1)
+      (return (test-tco2 (- n 1)))
+      (print "No overflow!")))
+  (test-tco2 10000000)
+
+  (defn test-tco3 [n]
+    (cond [(> n 10)
+           (return (test-tco3 (- n 2)))]
+          [(>= 10 n 2)
+           (return (test-tco3 (- n 1)))]
+          [true
+           (print "No overflow too!")]))
+  (test-tco3 10000000))
+
+(defsection "Object Oriented"
+
+  ;; hua's OO system is not very complete yet, for example it
+  ;; currently lacks something like `isinstance' in python
+
+  (defclass Animal []
+    [[--init
+      (fn [self steps-per-turn]
+        (setv self.steps-per-turn steps-per-turn))]
+     [move
+      (fn [self]
+        (print (concat "I moved "
+                       (tostring self.steps-per-turn)
+                       " steps!")))]])
+
+  ;; Hua only support single inheritance.
+  ;; Use `(super method paras...)' to call parent's method
+  (defclass Cat [Animal]
+    [[--init
+      (fn [self steps-per-turn sound]
+        (super --init  steps-per-turn)
+        (setv self.sound sound))]
+     [move
+      (fn [self]
+        (print self.sound)
+        (super move))]])
+
+  (def a-cat (Cat 3 "meow meow meow!"))
+  (.move a-cat))
+
+
+(defsection "Modules"
+  ;; you can use `require' as in lua, but you can also `hua-import' to
+  ;; import like hy.
+  (hua-import [dummy [dummy1 dummy2]])
+  (print "Variables in module \"dummy\"" dummy1 dummy2)
+
+  ;; at the end of a file, use `export' to export some local
+  ;; variable. Of course you can use `return' to manually do that.
+  (export test-tco3))
