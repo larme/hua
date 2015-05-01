@@ -38,9 +38,6 @@
              [comparing-body (list-comp `(~op* ~(get compare-vars (- i 1))
                                                ~(get compare-vars i))
                                         [i (range 1 (len compare-vars))])]]
-         (print `(do
-                  ~@binding-body
-                  (and ~@comparing-body)))
          `(do
            ~@binding-body
            (and ~@comparing-body))))))
