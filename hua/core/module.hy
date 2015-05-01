@@ -1,5 +1,6 @@
 (import [hy.models.list [HyList]]
-        [hy.models.symbol [HySymbol]])
+        [hy.models.symbol [HySymbol]]
+        [hua.core.utils [hua-gensym]])
 
 (defn import-helper [item]
   (when (not (instance? (, HySymbol HyList) item))
@@ -35,3 +36,14 @@
   (def body (list-comp (import-helper item) [item items]))
   `(do ~@body))
 
+
+;;; export a list o variables, use at the end of a hua file
+(defmacro export [&rest vars]
+  (def module-var (hua-gensym "module"))
+  (def assignments (list-comp `(assoc ~module-var
+                                      ~(string var)
+                                      ~var)
+                              [var vars]))
+  `(let [[~module-var {}]]
+     (do ~@assignments)
+     (return ~module-var)))
