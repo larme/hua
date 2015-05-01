@@ -1,4 +1,5 @@
 (require-macro hua.core.macros)
+(require-macro hua.core.assignment)
 (require-macro hua.core.module)
 
 (defn apply [f args]
