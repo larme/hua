@@ -1,3 +1,5 @@
+(import os.path)
+
 (import [hy.models.expression [HyExpression]]
         [hy.models.keyword [HyKeyword]]
         [hy.models.integer [HyInteger]]
@@ -6,13 +8,12 @@
         [hy.models.symbol [HySymbol]]
         [hy.models.list [HyList]]
         [hy.models.dict [HyDict]]
-        [hy.compiler [checkargs]])
+        [hy.compiler [checkargs]]
+        [hy.macros]
+        [hy.importer [import-file-to-hst]])
 
-(import hy.macros)
-
-(import hua.mlast)
-
-(setv ast hua.mlast)
+(import [hua.mlast :as ast]
+        [hua.lua [tlast->src]])
 
 (def -compile-table {})
 
@@ -685,8 +686,23 @@ Unlike python, only function/method call can be pure expression statement"
                                       [i (range half-length)]))
            (+= ret (ast.Table nil hash-part))           ))
 
-        ret))]
-   ])
+        ret))]])
 
+(defn compile-file-to-string [filename]
+  (def metalua-ast (let [[hst (import-file-to-hst filename)]
+                         ;; use filename as module name here since the
+                         ;; only function of module name in hua
+                         ;; compiler is to track which file requires
+                         ;; which macros
+                         [compiler (HuaASTCompiler filename)]]
+                     (.compile compiler hst)))
+  (def stmts (ast.to-ml-table metalua-ast.stmts))
+  (tlast->src stmts))
 
+(defn compile-file [filename]
+  (def result (compile-file-to-string filename))
+  (def (, basename extname) (os.path.splitext filename))
+  (def lua-filename (+ basename ".lua"))
+  (with [[lua-f (open lua-filename "w")]]
+        (.write lua-f result)))
 
