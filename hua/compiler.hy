@@ -550,9 +550,9 @@ Unlike python, only function/method call can be pure expression statement"
           ;; FIXME do we need this? (setv st-name (.-storeize self ld-name))
 
           (setv result (+ result
-                          ld-name
                           (ast.Set [ld-name.expr]
-                                   [result.force-expr])))
+                                   [result.force-expr])
+                          ld-name))
           result)))]
 
    [compile-for-expression
