@@ -282,9 +282,9 @@ By priority:
 
 - No sane error messages, no error codes line numbers!
   
-- No test cases!
+- No enough test cases yet!
   
-  - A repl may be needed for test cases.
+  - A repl may be needed for some test cases.
   
 - Currently every hua file need to begin with some initializing codes mainly to import standard macros into the hua file (see examples.hua). This should be done automatically.
   
@@ -292,14 +292,16 @@ By priority:
   
 - Talking about `hua_stdlib.lua`, we may add more functional list/dict manipulating functions using the excellent [Moses](https://github.com/Yonaba/Moses) library.
   
-- `huac` can only compile one file at one time.
+- ~~`huac` can only compile one file at one time.~~
   
 - Repl, again
   
-- Hy native compiler.
+- Native compiler in hy.
   
 - Docstring for function definition? It's quite doable because `defn/defun` is just a macro.
   
+
+
 
 
 
