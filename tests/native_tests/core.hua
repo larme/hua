@@ -1,0 +1,25 @@
+(require-macro hua.core.initialize)
+(--hua-initialize--)
+
+(hua-import luaunit)
+
+(def assert-equal luaunit.assertEquals)
+
+(setv test-def
+      (fn []
+        (def x 1)
+        (def y 1)
+        (assert-equal x y)
+        (def x (def y (fn [x] 9)))
+        (assert-equal (x y) 9)
+        (assert-equal (y x) 9)))
+
+(setv test-setv
+      (fn []
+        (def x nil)
+        (def y nil)
+        (setv x (setv y 12))
+        (assert-equal x 12)
+        (assert-equal y 12)))
+
+(os.exit (luaunit.LuaUnit.run))

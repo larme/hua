@@ -1,3 +1,4 @@
 *.pyc
 *.egg-info
 venv/
+tests/native_tests/*.lua

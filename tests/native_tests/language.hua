@@ -1,0 +1,134 @@
+(require-macro hua.core.initialize)
+(--hua-initialize--)
+
+(hua-import luaunit)
+
+(def assert-equal luaunit.assertEquals)
+(def assert-true luaunit.assertTrue)
+(def assert-false luaunit.assertFalse)
+
+(setv test-lists
+      (fn []
+        (assert-equal [1 2 3 4]
+                      {1 1 2 2 3 3 4 4})))
+
+(setv test-dicts
+      (fn []
+        (assert-equal {1 2 3 4}
+                      {3 4 1 2})
+        (assert-equal {1 2 3 4}
+                      {1 (+ 1 1) 3 (+ 2 2)})))
+
+(setv test-setv-get
+      (fn []
+        (def foo [1 2 3])
+        (setv (get foo 1) 12)
+        (assert-equal (get foo 1) 12)))
+
+(setv test-for-loop
+      (fn []
+        (def count 0)
+        (for [i [1 5]]
+          (+= count i))
+        (assert-equal count 15)
+        (setv count 0)
+        (for [i [1 5]
+              (, _ j) (ipairs [1 2 3 4 5])]
+          (setv count (+ count i j)))
+        (assert-equal count 150)))
+
+(setv test-not
+      (fn []
+        (assert-true (not (= 1 2)))
+        (assert-true (= true (not false)))
+        (assert-true (= false (not 42)))))
+
+(setv test-noteq
+      (fn []
+        (assert-true (!= 2 3))))
+
+(setv test-numops
+      (fn []
+        (assert-true (> 5 4 3 2 1))
+        (assert-true (< 1 2 3 4 5))
+        (assert-true (<= 5 5 5 5))
+        (assert-true (>= 5 5 5 5))))
+
+(defn test-branching []
+  "NATIVE: test if branching"
+  (if true
+    (assert (= 1 1))
+    (assert (= 2 1))))
+
+(setv test-branching
+      (fn [] 
+        (if true
+          (assert-true (= 1 1))
+          (assert-true (= 2 1)))))
+
+
+(setv test-branching-with-do
+      (fn []
+        (if false
+          (assert-true (= 2 1))
+          (do
+           (assert-true (= 1 1))
+           (assert-true (= 1 1))
+           (assert-true (= 1 1))))))
+
+(setv test-branching-expr-count-with-do
+      (fn []
+        (setv counter 0)
+        (if false
+          (assert-true (= 2 1))
+          (do
+           (setv counter (+ counter 1))
+           (setv counter (+ counter 1))
+           (setv counter (+ counter 1))))
+        (assert-true (= counter 3))))
+
+(setv test-cond
+      (fn []
+        "NATIVE: test if cond sorta works."
+        (cond
+         [(= 1 2) (assert-true (= true false))]
+         [(= nil nil) (assert-true (= true true))])))
+
+
+(setv test-index
+      (fn []
+        "NATIVE: Test that dict access works"
+        ;; in lua you cannot write something like {1, 2, 3}[1]
+        (def t1 {"one" "two"})
+        (assert-true (= (get t1 "one")
+                        "two"))
+        
+        (def t2 [1 2 3 4 5])
+        (assert-true (= (get t2 2)
+                        2))
+        
+        (def t3 {"first" {"second" {"third" "level"}}})
+        (assert-true (= (get t3 "first" "second" "third")
+                        "level"))
+        
+        ;; FIXME: The following codes should works
+        ;; (assert-true (= (get ((fn [] {"first" {"second" {"third" "level"}}}))
+        ;;                      "first" "second" "third")
+        ;;                 "level"))
+
+        ;; (def t4 {"first" {"second" {"third" "level"}}})
+        ;; (assert-true (= (get t4 ((fn [] "first")) "second" "third")
+        ;;                 "level"))
+        ))
+
+
+(setv test-lambda
+      (fn []
+        "NATIVE: test lambda operator"
+        (setv square (lambda [x] (* x x)))
+        (assert-true (= 4 (square 2)))
+        (setv lambda_list (lambda [test &rest args] [test args]))
+        (assert-equal [1 [2 3]]  (lambda_list 1 2 3))))
+
+
+(os.exit (luaunit.LuaUnit.run))
