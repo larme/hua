@@ -672,6 +672,22 @@ Unlike python, only function/method call can be pure expression statement"
         (def (, return-exprs ret) (.-compile-collect self expression))
         (+ ret (ast.Return return-exprs))))]
 
+   [compile-dispatch-reader-macro
+    (with-decorator
+      (builds "dispatch_reader_macro")
+      (checkargs 2)
+      (fn [self expression]
+        (.pop expression 0)
+        (def str-char (.pop expression 0))
+        (when (not (type str-char))
+          (raise "FIXME"))
+        
+        (def module self.module-name)
+        (def expr (hy.macros.reader-macroexpand str-char
+                                                (.pop expression 0)
+                                                module))
+        (.compile self expr)))]
+
    [compile-dict
     (with-decorator (builds HyDict)
       (fn [self m]
