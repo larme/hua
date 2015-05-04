@@ -8,7 +8,7 @@
     (macro-error item "(import) requires a Symbol or a List"))
 
   (if (instance? HySymbol item)
-    `(require ~(HyString item))
+    `(def ~item (require ~(HyString item)))
     (cond [(= 2 (len item))
            (let [[module (get item 0)]
                  [syms (get item 1)]
