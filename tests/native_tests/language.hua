@@ -100,16 +100,19 @@
         "NATIVE: Test that dict access works"
         ;; in lua you cannot write something like {1, 2, 3}[1]
         (def t1 {"one" "two"})
-        (assert-true (= (get t1 "one")
-                        "two"))
+        (assert-equal (get t1 "one") "two")
+        (assert-equal (get {"one" "two"} "one") "two")
         
         (def t2 [1 2 3 4 5])
-        (assert-true (= (get t2 2)
-                        2))
+        (assert-equal (get t2 2) 2)
+        (assert-equal (get [1 2 3 4 5] 2) 2)
         
         (def t3 {"first" {"second" {"third" "level"}}})
-        (assert-true (= (get t3 "first" "second" "third")
-                        "level"))
+        (assert-equal (get t3 "first" "second" "third")
+                      "level")
+        (assert-equal (get {"first" {"second" {"third" "level"}}}
+                           "first" "second" "third")
+                      "level")
         
         ;; FIXME: The following codes should works
         ;; (assert-true (= (get ((fn [] {"first" {"second" {"third" "level"}}}))

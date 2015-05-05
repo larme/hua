@@ -327,9 +327,15 @@ Unlike python, only function/method call can be pure expression statement"
 
         (for [index indexes]
           (setv val (+ (Result)
-                       (ast.Index val.force-expr
-                                  index))))
-        
+                       (ast.Index
+                        (let [[val-expr val.force-expr]]
+                          ;; if val.force-expr is a literal table, we
+                          ;; need a pair of parentheses around the
+                          ;; literal table to make the index work
+                          (if (instance? ast.Table val-expr)
+                            (ast.Paren val-expr)
+                            val-expr))
+                        index))))
         (+ ret val)))]
 
    [compile-multi
