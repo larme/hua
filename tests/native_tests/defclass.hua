@@ -5,7 +5,9 @@
 
 (def assert-equal luaunit.assertEquals)
 
-(setv test-defclass-attrs
+(def m {})
+
+(setv m.test-defclass-attrs
       (fn []
         (defclass A []
           [[--init (fn [self] self)]
@@ -13,7 +15,7 @@
         (assert-equal A.x 42)
         (assert-equal (get (A) "x") 42)))
 
-(setv test-defclass-attrs-fn
+(setv m.test-defclass-attrs-fn
       (fn []
         (defclass B []
           [[--init (fn [self] self)]
@@ -26,4 +28,4 @@
           (setv B.x 0)
           (assert-equal (.y B 1) 1))))
 
-(os.exit (luaunit.LuaUnit.run))
+(return m)

@@ -7,25 +7,27 @@
 (def assert-true luaunit.assertTrue)
 (def assert-false luaunit.assertFalse)
 
-(setv test-lists
+(def m {})
+
+(setv m.test-lists
       (fn []
         (assert-equal [1 2 3 4]
                       {1 1 2 2 3 3 4 4})))
 
-(setv test-dicts
+(setv m.test-dicts
       (fn []
         (assert-equal {1 2 3 4}
                       {3 4 1 2})
         (assert-equal {1 2 3 4}
                       {1 (+ 1 1) 3 (+ 2 2)})))
 
-(setv test-setv-get
+(setv m.test-setv-get
       (fn []
         (def foo [1 2 3])
         (setv (get foo 1) 12)
         (assert-equal (get foo 1) 12)))
 
-(setv test-for-loop
+(setv m.test-for-loop
       (fn []
         (def count 0)
         (for [i [1 5]]
@@ -37,37 +39,38 @@
           (setv count (+ count i j)))
         (assert-equal count 150)))
 
-(setv test-not
+(setv m.test-not
       (fn []
         (assert-true (not (= 1 2)))
         (assert-true (= true (not false)))
         (assert-true (= false (not 42)))))
 
-(setv test-noteq
+(setv m.test-noteq
       (fn []
         (assert-true (!= 2 3))))
 
-(setv test-numops
+(setv m.test-numops
       (fn []
         (assert-true (> 5 4 3 2 1))
         (assert-true (< 1 2 3 4 5))
         (assert-true (<= 5 5 5 5))
         (assert-true (>= 5 5 5 5))))
 
-(defn test-branching []
-  "NATIVE: test if branching"
-  (if true
-    (assert (= 1 1))
-    (assert (= 2 1))))
+(setv m.test-branching
+      (fn [] 
+        "NATIVE: test if branching"
+        (if true
+          (assert (= 1 1))
+          (assert (= 2 1)))))
 
-(setv test-branching
+(setv m.test-branching
       (fn [] 
         (if true
           (assert-true (= 1 1))
           (assert-true (= 2 1)))))
 
 
-(setv test-branching-with-do
+(setv m.test-branching-with-do
       (fn []
         (if false
           (assert-true (= 2 1))
@@ -76,7 +79,7 @@
            (assert-true (= 1 1))
            (assert-true (= 1 1))))))
 
-(setv test-branching-expr-count-with-do
+(setv m.test-branching-expr-count-with-do
       (fn []
         (setv counter 0)
         (if false
@@ -87,7 +90,7 @@
            (setv counter (+ counter 1))))
         (assert-true (= counter 3))))
 
-(setv test-cond
+(setv m.test-cond
       (fn []
         "NATIVE: test if cond sorta works."
         (cond
@@ -95,7 +98,7 @@
          [(= nil nil) (assert-true (= true true))])))
 
 
-(setv test-index
+(setv m.test-index
       (fn []
         "NATIVE: Test that dict access works"
         ;; in lua you cannot write something like {1, 2, 3}[1]
@@ -125,7 +128,7 @@
         ))
 
 
-(setv test-lambda
+(setv m.test-lambda
       (fn []
         "NATIVE: test lambda operator"
         (setv square (lambda [x] (* x x)))
@@ -134,4 +137,5 @@
         (assert-equal [1 [2 3]]  (lambda_list 1 2 3))))
 
 
-(os.exit (luaunit.LuaUnit.run))
+(return m)
+

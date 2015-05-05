@@ -1,0 +1,11 @@
+(require-macro hua.core.initialize)
+(--hua-initialize--)
+
+(hua-import luaunit)
+
+(setv TestCore (require "core"))
+(setv TestLanguage (require "language"))
+(setv TestReaderMacro (require "reader_macros"))
+(setv TestDefclass (require "defclass"))
+
+(os.exit (luaunit.LuaUnit.run))

@@ -7,9 +7,11 @@
 
 (require-macro "reader_macros")
 
-(setv test-reader-macros
+(def m {})
+
+(setv m.test-reader-macros
       (fn []
         (assert-equal #^"works" "works")
         (assert-equal #x10 16)))
 
-(os.exit (luaunit.LuaUnit.run))
+(return m)

@@ -5,7 +5,9 @@
 
 (def assert-equal luaunit.assertEquals)
 
-(setv test-def
+(def m {})
+
+(setv m.test-def
       (fn []
         (def x 1)
         (def y 1)
@@ -14,7 +16,7 @@
         (assert-equal (x y) 9)
         (assert-equal (y x) 9)))
 
-(setv test-setv
+(setv m.test-setv
       (fn []
         (def x nil)
         (def y nil)
@@ -22,4 +24,4 @@
         (assert-equal x 12)
         (assert-equal y 12)))
 
-(os.exit (luaunit.LuaUnit.run))
+(return m)
