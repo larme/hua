@@ -272,6 +272,38 @@ Because lua doesn't support named arguments, hua will not support keyword argume
 
 In hy `(foo.bar "hello")` is the same as `(.bar foo "hello")`. They both invoke a method `bar` of object `foo` with a single parameter `"hello"`. However in hua it's entirely different. `(foo.bar "hello")` compiles to `foo.bar("hello")` while `(.bar foo "hello")` compiles to `foo:bar("hello")`. In both case `bar` is a property of table `foo`, however in the first case `bar` is called with a single argument `"hello"` while in the second case `bar` is called with two arguments: table `foo` and `"hello"`.
 
+### `defclass` difference
+
+`defclass` works like hy's one. Use `--init` instead of `--init--`. When defining a class without parent class, `--init` method is mandatory.
+
+``` lisp
+;; A class without parent class.
+;; A --init method is required for class without parent class.
+(defclass Animal []
+  [[--init
+    (fn [self steps-per-turn]
+        (setv self.steps-per-turn steps-per-turn))]
+   [move
+    (fn [self]
+        (print (concat "I moved "
+                       (tostring self.steps-per-turn)
+                       " steps!")))]])
+
+;; Hua only support single inheritance.
+;; Use `(super method paras...)' to call parent's method
+(defclass Cat [Animal]
+  [[--init
+    (fn [self steps-per-turn sound]
+        (super --init  steps-per-turn)
+        (setv self.sound sound))]
+   [move
+    (fn [self]
+        (print self.sound)
+        (super move))]])
+```
+
+
+
 ### Misc
 
 Nearly any lua vs python differences will hold in hua vs hy. Some examples: hua has correct lexical scoping so nested `let` works; only `nil` and `false` are false in hua while empty string and list are also false in hy etc; hua table are not iterable like python's dict and list.
