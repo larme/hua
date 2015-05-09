@@ -12,10 +12,9 @@ One of the benefit of hua over hy is speed, especially if you run the compiled l
 
 1. Create and activate a virtualenv
 2. Install [lupa](https://github.com/scoder/lupa). It's a little bit tricky on Mac. If you have any troubles, please refer to [this guide](https://gist.github.com/larme/9079789cdb1f2fb72b34). (Side notes: currently hua uses [Typed Lua](https://github.com/andremm/typedlua)'s ast->code compiler to generate lua codes so a lua runtime in python (i.e. lupa) is required. I plan to write a native compiler that compiles hua to lua so at least the compiling process doesn't require a lua runtime. However I also plan to add repl to hua which will need the lua runtime. Hence lupa will still be a dependancy in future if you want to use the repl.)
-3. Hua requires the latest hy on github because the stable version has some bugs when expanding macros. You can do it by `git clone https://github.com/hylang/hy.git; cd hy; pip install -e .`
-4. You also need to install hua from the git repository: `git clone https://github.com/larme/hua.git; cd hua`
-5. `pip install -e .`
-6. Now you can try the compiler by cding into `eg/` and typing `huac example.hua`. The output will be `example.lua`.
+3. You need to install hua from the git repository: `git clone https://github.com/larme/hua.git; cd hua`
+4. `pip install -e .`
+5. Now you can try the compiler by cding into `eg/` and typing `huac example.hua`. The output will be `example.lua`.
 
 
 ## Brief Introduction aka Comparison with Hy
@@ -331,7 +330,8 @@ By priority:
 - Native compiler in hy.
   
 - Docstring for function definition? It's quite doable because `defn/defun` is just a macro.
-  
+
+
 
 
 

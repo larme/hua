@@ -44,7 +44,7 @@ else:
 long_description = """Hua is a Lisp to lua compiler. It gives lua
 simple and powerful meta programming ability."""
 
-install_requires = ['hy>=0.10.1', 'lupa>=1.1']
+install_requires = ['hy>=0.11.0', 'lupa>=1.1']
 if sys.version_info[:2] < (2, 7):
     install_requires.append('argparse>=1.2.1')
     install_requires.append('importlib>=1.0.2')
