@@ -350,6 +350,8 @@
   [[tag "Call"]
    [--init--
     (fn [self func args]
+      (when (instance? Function func)
+        (setv func (Paren func)))
       (setv self.func func)
       (setv self.args args)
       nil)]

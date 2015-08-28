@@ -117,14 +117,13 @@
                            "first" "second" "third")
                       "level")
         
-        ;; FIXME: The following codes should works
-        ;; (assert-true (= (get ((fn [] {"first" {"second" {"third" "level"}}}))
-        ;;                      "first" "second" "third")
-        ;;                 "level"))
+        (assert-true (= (get ((fn [] {"first" {"second" {"third" "level"}}}))
+                             "first" "second" "third")
+                        "level"))
 
-        ;; (def t4 {"first" {"second" {"third" "level"}}})
-        ;; (assert-true (= (get t4 ((fn [] "first")) "second" "third")
-        ;;                 "level"))
+        (def t4 {"first" {"second" {"third" "level"}}})
+        (assert-true (= (get t4 ((fn [] "first")) "second" "third")
+                        "level"))
         ))
 
 
