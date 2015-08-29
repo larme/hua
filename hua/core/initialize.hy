@@ -21,7 +21,26 @@
 
 ;;; import standard library
 (defmacro --hua-import-stdlib-- []
-  `(hua-import [hua_stdlib [apply dec first inc]]))
+  `(hua-import [hua_stdlib [apply
+                            dec
+                            first
+                            inc
+
+                            ;; moses functions
+                            clone
+                            array?
+                            table?
+                            equal?
+                            callable?
+                            iterable?
+                            string?
+                            function?
+                            nil?
+                            number?
+                            nan?
+                            finite?
+                            boolean?
+                            int?]]))
 
 ;;; a macro to import all core macros
 

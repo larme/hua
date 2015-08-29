@@ -2,6 +2,21 @@
 (require-macro hua.core.assignment)
 (require-macro hua.core.module)
 
+(hua-import [moses [clone
+                    isArray
+                    isTable
+                    isEqual
+                    isCallable
+                    isIterable
+                    isString
+                    isFunction
+                    isNil
+                    isNumber
+                    isNaN
+                    isFinite
+                    isBoolean
+                    isInteger]])
+
 (defn apply [f args]
   (f (unpack args)))
 
@@ -14,7 +29,41 @@
 (defn inc [n]
   (+ n 1))
 
+
+;;; core functions from moses
+
+(def array? isArray)
+(def table? isTable)
+(def equal? isEqual)
+(def callable? isCallable)
+(def iterable? isIterable)
+(def string? isString)
+(def function? isFunction)
+(def nil? isNil)
+(def number? isNumber)
+(def nan? isNaN)
+(def finite? isFinite)
+(def boolean? isBoolean)
+(def int? isInteger)
+
 (export apply
         dec
         first
-        inc)
+        inc
+
+        ;; moses functions
+        clone
+        array?
+        table?
+        equal?
+        callable?
+        iterable?
+        string?
+        function?
+        nil?
+        number?
+        nan?
+        finite?
+        boolean?
+        int?
+        )
